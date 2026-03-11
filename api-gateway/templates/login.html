@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BookStore — Đăng nhập</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --border: #e2e8f0;
+      --error-bg: #fef2f2;
+      --error-text: #991b1b;
+      --glass-bg: rgba(255, 255, 255, 0.7);
+      --glass-border: rgba(255, 255, 255, 0.5);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Inter', sans-serif;
+      position: relative; overflow: hidden;
+    }
+    /* Abstract Animated Background */
+    .bg-shape {
+      position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.6; z-index: 0; animation: float 10s infinite alternate;
+    }
+    .shape-1 {
+      width: 500px; height: 500px; background: #c7d2fe; top: -100px; left: -100px; animation-delay: 0s;
+    }
+    .shape-2 {
+      width: 600px; height: 600px; background: #e0e7ff; bottom: -200px; right: -100px; animation-delay: -5s;
+    }
+    @keyframes float {
+      0% { transform: translateY(0) scale(1); }
+      100% { transform: translateY(-30px) scale(1.05); }
+    }
+    
+    .login-wrap {
+      display: flex; width: 100%; max-width: 1000px; min-height: 600px;
+      margin: 20px; border-radius: 24px; overflow: hidden;
+      background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+      position: relative; z-index: 1;
+    }
+    /* Left Panel - Hero Graphic */
+    .login-left {
+      flex: 1.2; position: relative; overflow: hidden;
+      background: linear-gradient(135deg, #4f46e5 0%, #312e81 100%);
+      padding: 60px 40px; display: flex; flex-direction: column; justify-content: center; color: white;
+    }
+    .login-left::before {
+      content: ''; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .brand-logo { font-family: 'Outfit', sans-serif; font-size: 2.2rem; font-weight: 800; margin-bottom: 24px; letter-spacing: -1px; position: relative; }
+    .hero-text { font-size: 1.05rem; line-height: 1.6; opacity: 0.9; margin-bottom: 40px; font-weight: 300; position: relative; }
+    
+    .feature-list { display: flex; flex-direction: column; gap: 20px; position: relative; }
+    .feature-item { display: flex; align-items: center; gap: 16px; font-size: 0.95rem; font-weight: 500; }
+    .feature-icon { width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
+    
+    /* Right Panel - Form */
+    .login-right {
+      flex: 1; padding: 60px 50px; display: flex; flex-direction: column; justify-content: center;
+      background: rgba(255,255,255,0.6);
+    }
+    .form-header { margin-bottom: 35px; }
+    .form-title { font-family: 'Outfit', sans-serif; font-size: 2rem; font-weight: 700; color: var(--text); margin-bottom: 8px; letter-spacing: -0.5px; }
+    .form-sub { color: var(--text-muted); font-size: 0.95rem; }
+    
+    .form-group { margin-bottom: 24px; }
+    .form-label { font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 8px; display: block; text-transform: uppercase; letter-spacing: 0.5px; }
+    .input-wrap { position: relative; }
+    .input-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 1rem; transition: color 0.3s; }
+    .form-input {
+      width: 100%; padding: 14px 16px 14px 46px;
+      border: 1px solid var(--border); border-radius: 12px;
+      font-size: 0.95rem; font-family: 'Inter', sans-serif;
+      background: white; color: var(--text);
+      transition: all 0.3s ease;
+    }
+    .form-input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
+    .form-input:focus + .input-icon { color: var(--primary); }
+    
+    .btn-submit {
+      width: 100%; padding: 14px;
+      background: var(--primary); color: white;
+      border: none; border-radius: 12px;
+      font-size: 1rem; font-weight: 600;
+      cursor: pointer; transition: all 0.3s ease;
+      display: flex; justify-content: center; align-items: center; gap: 8px;
+    }
+    .btn-submit:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(79, 70, 229, 0.2); }
+    
+    .demo-accounts {
+      margin-top: 32px; padding: 20px;
+      background: rgba(241, 245, 249, 0.7); border-radius: 12px; border: 1px dashed #cbd5e1;
+    }
+    .demo-title { font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px; }
+    .demo-list { display: grid; gap: 8px; font-size: 0.85rem; color: var(--text); }
+    .demo-list div { display: flex; justify-content: space-between; }
+    .demo-list span { font-weight: 600; color: var(--primary); }
+    
+    .alert-box {
+      background: var(--error-bg); border: 1px solid #fecaca; color: var(--error-text);
+      padding: 12px 16px; border-radius: 10px; margin-bottom: 24px; font-size: 0.9rem; font-weight: 500; display: flex; align-items: center; gap: 8px;
+    }
+    .footer-link { text-align: center; margin-top: 24px; font-size: 0.9rem; color: var(--text-muted); }
+    .footer-link a { color: var(--primary); font-weight: 600; text-decoration: none; transition: color 0.2s; }
+    .footer-link a:hover { color: var(--primary-hover); text-decoration: underline; }
+    
+    @media (max-width: 768px) {
+      .login-left { display: none; }
+      .login-wrap { min-height: auto; max-width: 450px; }
+      .login-right { padding: 40px 30px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shape-1 bg-shape"></div>
+  <div class="shape-2 bg-shape"></div>
+
+  <div class="login-wrap">
+    <div class="login-left">
+      <div class="brand-logo">BookStore.</div>
+      <p class="hero-text">Experience a new way to explore and purchase your favorite books. A modern, seamless, and aesthetic e-commerce platform.</p>
+      
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-layer-group"></i></div>
+          <span>Curated Collection of the Best Titles</span>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+          <span>Lightning Fast Checkout Experience</span>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+          <span>Secure & Private JWT Architecture</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="login-right">
+      <div class="form-header">
+        <h1 class="form-title">Welcome back</h1>
+        <p class="form-sub">Sign in to your account to continue</p>
+      </div>
+
+      {% if message %}
+      <div class="alert-box"><i class="fas fa-exclamation-circle"></i> {{ message }}</div>
+      {% endif %}
+
+      <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+          <label class="form-label" for="username">Username</label>
+          <div class="input-wrap">
+            <input class="form-input" type="text" id="username" name="username" placeholder="Enter your username" required>
+            <i class="fas fa-user input-icon"></i>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <div class="input-wrap">
+            <input class="form-input" type="password" id="password" name="password" placeholder="Enter your password" required>
+            <i class="fas fa-lock input-icon"></i>
+          </div>
+        </div>
+        <button type="submit" class="btn-submit">Sign In <i class="fas fa-arrow-right"></i></button>
+      </form>
+
+      <div class="demo-accounts">
+        <div class="demo-title">Demo Credentials</div>
+        <div class="demo-list">
+          <div>Admin: <span>admin / admin123</span></div>
+          <div>Staff: <span>staff1 / staff123</span></div>
+          <div>Customer: <span>customer1 / pass123</span></div>
+        </div>
+      </div>
+      
+      <p class="footer-link">Don't have an account? <a href="/customers/new/">Create one</a></p>
+    </div>
+  </div>
+</body>
+</html>

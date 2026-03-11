@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — BookStore</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --primary: #4f46e5;
+      --sidebar-bg: #0f172a;
+      --sidebar-hover: #1e293b;
+      --border: #e2e8f0;
+      --accent: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --info: #0ea5e9;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); font-family: 'Inter', sans-serif; color: var(--text); overflow-x: hidden; }
+
+    /* LAYOUT */
+    .app-layout { display: flex; min-height: 100vh; }
+    
+    /* SIDEBAR */
+    .sidebar { width: 260px; background: var(--sidebar-bg); color: #cbd5e1; display: flex; flex-direction: column; flex-shrink: 0; position: fixed; top: 0; bottom: 0; left: 0; z-index: 1000; transition: transform 0.3s; }
+    .sidebar-header { padding: 24px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .sidebar-brand { font-family: 'Outfit', sans-serif; font-size: 1.5rem; font-weight: 800; color: white; text-decoration: none; display: flex; align-items: center; gap: 10px; }
+    .sidebar-brand span { color: var(--primary); }
+    .sidebar-brand:hover { color: white; }
+    
+    .sidebar-menu { flex: 1; padding: 20px 16px; display: flex; flex-direction: column; gap: 8px; overflow-y: auto; }
+    .menu-label { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #64748b; margin: 16px 8px 8px; letter-spacing: 0.5px; }
+    .menu-link { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: #cbd5e1; text-decoration: none; border-radius: 10px; font-weight: 500; font-size: 0.95rem; transition: all 0.2s; }
+    .menu-link i { font-size: 1.1rem; width: 24px; text-align: center; }
+    .menu-link:hover { background: var(--sidebar-hover); color: white; }
+    .menu-link.active { background: var(--primary); color: white; font-weight: 600; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3); }
+    
+    .sidebar-footer { padding: 20px; border-top: 1px solid rgba(255,255,255,0.05); }
+    .user-profile { display: flex; align-items: center; gap: 12px; color: white; text-decoration: none; }
+    .user-avatar { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, var(--primary), #818cf8); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; }
+    .user-info { display: flex; flex-direction: column; }
+    .user-name { font-weight: 600; font-size: 0.9rem; }
+    .user-role { font-size: 0.75rem; color: #94a3b8; text-transform: capitalize; }
+
+    /* MAIN CONTENT */
+    .main-content { flex: 1; margin-left: 260px; display: flex; flex-direction: column; min-width: 0; }
+    
+    /* TOPBAR */
+    .topbar { background: var(--surface); padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 99; }
+    .topbar-left { display: flex; align-items: center; gap: 16px; }
+    .sidebar-toggle { display: none; background: none; border: none; font-size: 1.2rem; color: var(--text); cursor: pointer; }
+    .page-title { font-family: 'Outfit', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--text); margin: 0; }
+    
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+    .btn-topbar { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); background: #f1f5f9; border: none; cursor: pointer; transition: all 0.2s; text-decoration: none; }
+    .btn-topbar:hover { background: #e2e8f0; color: var(--text); }
+    
+    /* CONTENT AREA */
+    .content-area { padding: 32px; flex: 1; }
+    
+    /* STATS GRID */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-bottom: 32px; }
+    .stat-card { background: var(--surface); border-radius: 16px; padding: 24px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); display: flex; align-items: flex-start; justify-content: space-between; transition: all 0.2s; }
+    .stat-card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); }
+    .stat-info { display: flex; flex-direction: column; gap: 8px; }
+    .stat-label { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .stat-value { font-family: 'Outfit', sans-serif; font-size: 2rem; font-weight: 800; color: var(--text); line-height: 1; }
+    .stat-icon { width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+    .icon-primary { background: rgba(79, 70, 229, 0.1); color: var(--primary); }
+    .icon-accent { background: rgba(16, 185, 129, 0.1); color: var(--accent); }
+    .icon-warning { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+    .icon-info { background: rgba(14, 165, 233, 0.1); color: var(--info); }
+    
+    /* SECTION HEADER */
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .section-title { font-family: 'Outfit', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--text); margin: 0; display: flex; align-items: center; gap: 10px; }
+    
+    /* SERVICES GRID */
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px; }
+    .service-card { background: var(--surface); border-radius: 16px; padding: 20px; text-align: center; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); transition: all 0.2s; }
+    .service-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+    .svc-icon { width: 48px; height: 48px; border-radius: 12px; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--primary); background: #f1f5f9; transition: all 0.2s; }
+    .service-card:hover .svc-icon { background: var(--primary); color: white; }
+    .svc-name { font-weight: 700; font-size: 0.95rem; color: var(--text); margin-bottom: 12px; font-family: 'Outfit', sans-serif; }
+    .badge-status { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .status-online { background: #dcfce7; color: #166534; }
+    .status-online::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #166534; }
+    .status-offline { background: #fee2e2; color: #991b1b; }
+    .status-offline::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #991b1b; }
+
+    /* SYS STATS */
+    .sys-stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+    .sys-item { background: var(--surface); border-radius: 16px; padding: 20px; border: 1px solid var(--border); border-left: 4px solid var(--primary); display: flex; flex-direction: column; gap: 4px; }
+    .sys-item-val { font-family: 'Outfit', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--text); }
+    .sys-item-label { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
+
+    @media(max-width:992px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); box-shadow: 4px 0 24px rgba(0,0,0,0.2); }
+      .main-content { margin-left: 0; }
+      .sidebar-toggle { display: block; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-layout">
+  
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="/dashboard/" class="sidebar-brand">
+        <i class="fas fa-layer-group text-primary"></i>
+        <span>BookStore</span> Admin
+      </a>
+    </div>
+    
+    <div class="sidebar-menu">
+      <div class="menu-label">Tổng quan</div>
+      <a href="/dashboard/" class="menu-link active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+      
+      <div class="menu-label">Quản lý</div>
+      <!-- Links placeholder if needed later -->
+      
+      <div class="menu-label">Hệ thống</div>
+      <a href="/" class="menu-link"><i class="fas fa-store"></i> Quay lại cửa hàng</a>
+    </div>
+    
+    <div class="sidebar-footer">
+      <a href="#" class="user-profile">
+        <div class="user-avatar">{{ user.username|first|upper|default:"A" }}</div>
+        <div class="user-info">
+          <span class="user-name">{{ user.username|default:"Admin" }}</span>
+          <span class="user-role">{{ role|default:"Administrator" }}</span>
+        </div>
+      </a>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="sidebar-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+        <h1 class="page-title">Hệ thống Microservices</h1>
+      </div>
+      <div class="topbar-right">
+        <a href="/" class="btn-topbar" title="Cửa hàng"><i class="fas fa-globe"></i></a>
+        <a href="/logout/" class="btn-topbar" title="Đăng xuất"><i class="fas fa-sign-out-alt"></i></a>
+      </div>
+    </header>
+    
+    <!-- CONTENT -->
+    <div class="content-area">
+      
+      <!-- STATS GRID -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Tổng đầu sách</span>
+            <span class="stat-value">—</span>
+          </div>
+          <div class="stat-icon icon-primary"><i class="fas fa-book-open"></i></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Khách hàng</span>
+            <span class="stat-value">—</span>
+          </div>
+          <div class="stat-icon icon-info"><i class="fas fa-users"></i></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Đơn hàng</span>
+            <span class="stat-value">—</span>
+          </div>
+          <div class="stat-icon icon-accent"><i class="fas fa-shopping-bag"></i></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Active Services</span>
+            <span class="stat-value">11</span>
+          </div>
+          <div class="stat-icon icon-warning"><i class="fas fa-server"></i></div>
+        </div>
+      </div>
+      
+      <!-- SERVICES STATUS -->
+      <div class="section-header">
+        <h2 class="section-title">Trạng thái Dịch vụ</h2>
+      </div>
+      
+      <div class="services-grid">
+        {% for name, status in stats.items %}
+        <div class="service-card">
+          <div class="svc-icon">
+            {% if name == 'book' %}<i class="fas fa-book"></i>
+            {% elif name == 'customer' %}<i class="fas fa-users"></i>
+            {% elif name == 'cart' %}<i class="fas fa-shopping-cart"></i>
+            {% elif name == 'order' %}<i class="fas fa-box"></i>
+            {% elif name == 'pay' %}<i class="fas fa-credit-card"></i>
+            {% elif name == 'ship' %}<i class="fas fa-truck"></i>
+            {% elif name == 'comment' %}<i class="fas fa-comments"></i>
+            {% elif name == 'recommend' %}<i class="fas fa-lightbulb"></i>
+            {% elif name == 'catalog' %}<i class="fas fa-list"></i>
+            {% elif name == 'staff' %}<i class="fas fa-user-tie"></i>
+            {% elif name == 'auth' %}<i class="fas fa-lock"></i>
+            {% else %}<i class="fas fa-server"></i>
+            {% endif %}
+          </div>
+          <div class="svc-name">{{ name|title }} Service</div>
+          <span class="badge-status {% if status == 'online' %}status-online{% else %}status-offline{% endif %}">
+            {% if status == 'online' %}Online{% else %}Offline{% endif %}
+          </span>
+        </div>
+        {% endfor %}
+      </div>
+      
+      <!-- SYSTEM STATS -->
+      <div class="section-header" style="margin-top: 40px;">
+        <h2 class="section-title">Thông số Hệ thống</h2>
+      </div>
+      
+      <div class="sys-stats-grid">
+        <div class="sys-item">
+          <span class="sys-item-val">11</span>
+          <span class="sys-item-label">Services Running</span>
+        </div>
+        <div class="sys-item">
+          <span class="sys-item-val" style="color:var(--accent);">99.8%</span>
+          <span class="sys-item-label">Global Uptime</span>
+        </div>
+        <div class="sys-item">
+          <span class="sys-item-val">1.2s</span>
+          <span class="sys-item-label">Avg Response Time</span>
+        </div>
+        <div class="sys-item">
+          <span class="sys-item-val" style="color:var(--accent);">0</span>
+          <span class="sys-item-label">Active Alerts</span>
+        </div>
+        <div class="sys-item">
+          <span class="sys-item-val">JWT</span>
+          <span class="sys-item-label">Auth Method</span>
+        </div>
+        <div class="sys-item">
+          <span class="sys-item-val">PostgreSQL</span>
+          <span class="sys-item-label">Database</span>
+        </div>
+      </div>
+      
+    </div>
+  </main>
+</div>
+
+<script>
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+  }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

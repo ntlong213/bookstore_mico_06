@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý sách — BookStore Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --blue: #3b82f6;
+      --green: #10b981;
+      --red: #ef4444;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); font-family: 'Inter', sans-serif; color: var(--text); }
+
+    /* NAVBAR */
+    .navbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 0; position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+    .navbar-brand { font-family: 'Outfit', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--text) !important; letter-spacing: -0.5px; }
+    .navbar-brand span { color: var(--primary); }
+    .nav-link { color: var(--text-muted) !important; font-weight: 500; font-size: 0.95rem; border-radius: 8px; transition: all 0.2s; padding: 0.5rem 1rem !important; }
+    .nav-link:hover, .nav-link.active { color: var(--primary) !important; background: rgba(79, 70, 229, 0.05); }
+
+    /* PAGE HEADER */
+    .page-header { padding: 40px 0 30px; }
+    .page-header h1 { font-family: 'Outfit', sans-serif; font-size: 2rem; font-weight: 700; color: var(--text); margin-bottom: 8px; letter-spacing: -0.5px; }
+    .page-header p { color: var(--text-muted); font-size: 0.95rem; }
+
+    /* FORM CARD */
+    .form-card {
+      background: var(--surface); border-radius: 16px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
+      border: 1px solid var(--border); margin-bottom: 40px; overflow: hidden;
+    }
+    .form-card-header {
+      padding: 24px 28px 20px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .form-card-header h2 { font-family: 'Outfit', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--text); margin: 0; }
+    .icon-box { width: 36px; height: 36px; background: rgba(79, 70, 229, 0.1); color: var(--primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+    
+    .form-card-body { padding: 28px; }
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-bottom: 24px; }
+    .form-group { display: flex; flex-direction: column; }
+    .bs-label { font-weight: 600; font-size: 0.85rem; color: var(--text); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .bs-input {
+      padding: 12px 16px; border: 1px solid var(--border); border-radius: 10px;
+      font-size: 0.95rem; font-family: 'Inter', sans-serif; background: #f8fafc; color: var(--text); transition: all 0.2s;
+    }
+    .bs-input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); background: white; }
+    .bs-textarea { resize: vertical; min-height: 100px; }
+    
+    .btn-submit {
+      background: var(--primary); color: white; border: none; padding: 12px 28px; border-radius: 10px;
+      font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.2s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-submit:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3); }
+
+    /* TABLE CARD */
+    .table-card {
+      background: var(--surface); border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
+      border: 1px solid var(--border); overflow: hidden; margin-bottom: 60px;
+    }
+    .table-card-header {
+      padding: 24px 28px 20px; display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+    .table-card-header h2 { font-family: 'Outfit', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--text); margin: 0; display: flex; align-items: center; gap: 12px; }
+    .table-count { background: #f1f5f9; color: var(--text-muted); font-size: 0.85rem; padding: 4px 12px; border-radius: 20px; font-weight: 600; border: 1px solid var(--border); }
+    
+    .table-toolbar { padding: 16px 28px; border-bottom: 1px solid var(--border); display: flex; gap: 12px; align-items: center; background: #fafafa; }
+    .table-search { flex: 1; max-width: 400px; padding: 10px 16px 10px 42px; border: 1px solid var(--border); border-radius: 10px; font-size: 0.95rem; background: white; transition: all 0.2s; }
+    .table-search:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
+    .search-wrap { position: relative; width: 100%; max-width: 400px; }
+    .search-wrap i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.9rem; }
+
+    /* TABLE */
+    .bs-table { width: 100%; border-collapse: collapse; }
+    .bs-table thead th {
+      background: #f8fafc; color: var(--text-muted); font-weight: 600; font-size: 0.8rem;
+      text-transform: uppercase; letter-spacing: 0.5px; padding: 16px 24px;
+      border-bottom: 1px solid var(--border); text-align: left;
+    }
+    .bs-table tbody td { padding: 16px 24px; border-bottom: 1px solid var(--border); font-size: 0.95rem; vertical-align: middle; }
+    .bs-table tbody tr:hover { background: #f8fafc; }
+    .bs-table tbody tr:last-child td { border-bottom: none; }
+
+    .book-thumb { width: 48px; height: 68px; object-fit: cover; border-radius: 6px; border: 1px solid var(--border); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .book-thumb-placeholder { width: 48px; height: 68px; background: #f1f5f9; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #cbd5e1; font-size: 1.2rem; border: 1px solid var(--border); }
+    .book-title-cell { font-weight: 600; color: var(--text); font-size: 0.95rem; line-height: 1.4; margin-bottom: 4px; }
+    .book-author-cell { color: var(--text-muted); font-size: 0.85rem; }
+    .price-cell { color: var(--text); font-weight: 700; font-size: 0.95rem; }
+    .price-original { color: var(--text-muted); font-size: 0.8rem; text-decoration: line-through; margin-top: 2px; }
+
+    /* Stock badges */
+    .badge-stock-high { background: #dcfce7; color: #166534; padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; border: 1px solid #bbf7d0; }
+    .badge-stock-low  { background: #fef9c3; color: #854d0e; padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; border: 1px solid #fef08a; }
+    .badge-stock-none { background: #fee2e2; color: #991b1b; padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; border: 1px solid #fecaca; }
+
+    /* Action buttons */
+    .btn-edit-sm { background: white; color: var(--blue); border: 1px solid var(--border); padding: 8px 14px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; text-decoration: none; }
+    .btn-edit-sm:hover { border-color: var(--blue); background: #eff6ff; }
+    .btn-del-sm { background: white; color: var(--red); border: 1px solid var(--border); padding: 8px 14px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+    .btn-del-sm:hover { border-color: var(--red); background: #fef2f2; }
+
+    .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+    .empty-state .empty-icon { font-size: 3.5rem; opacity: 0.3; margin-bottom: 16px; }
+
+    @media(max-width:768px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .table-card { overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="/dashboard/">Book<span>Store.</span> <small style="font-size:0.9rem;font-weight:500;color:var(--text-muted);">Admin</small></a>
+    <div class="navbar-nav ms-auto d-flex flex-row gap-2">
+      <a class="nav-link" href="/dashboard/"><i class="fas fa-tachometer-alt me-1"></i> Dashboard</a>
+      <a class="nav-link" href="/login/"><i class="fas fa-sign-out-alt me-1"></i> Đăng xuất</a>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="container">
+    <h1>Quản lý sách</h1>
+    <p>Thêm, sửa, xóa và quản lý kho sách một cách dễ dàng.</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ADD BOOK FORM -->
+  <div class="form-card">
+    <div class="form-card-header">
+      <div class="icon-box"><i class="fas fa-plus"></i></div>
+      <h2>Thêm sách mới</h2>
+    </div>
+    <div class="form-card-body">
+      <form method="POST">
+        {% csrf_token %}
+        <!-- Row 1 -->
+        <div class="form-grid">
+          <div class="form-group" style="grid-column: span 2;">
+            <label class="bs-label">Tên sách *</label>
+            <input class="bs-input" type="text" name="title" placeholder="Nhập tên sách..." required>
+          </div>
+          <div class="form-group">
+            <label class="bs-label">Tác giả *</label>
+            <input class="bs-input" type="text" name="author" placeholder="Tên tác giả..." required>
+          </div>
+          <div class="form-group">
+            <label class="bs-label">Nhà xuất bản</label>
+            <input class="bs-input" type="text" name="publisher" placeholder="NXB...">
+          </div>
+        </div>
+        <!-- Row 2 -->
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="bs-label">Giá bán (₫) *</label>
+            <input class="bs-input" type="number" name="price" step="1000" placeholder="0" required>
+          </div>
+          <div class="form-group">
+            <label class="bs-label">Giá gốc (₫)</label>
+            <input class="bs-input" type="number" name="original_price" step="1000" placeholder="0">
+          </div>
+          <div class="form-group">
+            <label class="bs-label">Số lượng kho *</label>
+            <input class="bs-input" type="number" name="stock" placeholder="0" required>
+          </div>
+          <div class="form-group">
+            <label class="bs-label">Số trang</label>
+            <input class="bs-input" type="number" name="pages" placeholder="0">
+          </div>
+        </div>
+        <!-- Row 3 -->
+        <div class="form-grid">
+          <div class="form-group" style="grid-column: span 2;">
+            <label class="bs-label">URL ảnh bìa</label>
+            <input class="bs-input" type="url" name="cover_image" id="coverUrl" placeholder="https://..." oninput="previewCover(this.value)">
+          </div>
+          <div class="form-group">
+            <label class="bs-label">Thể loại</label>
+            <input class="bs-input" type="text" name="category" placeholder="Văn học, Công nghệ...">
+          </div>
+          <div class="form-group">
+            <label class="bs-label">Ngôn ngữ</label>
+            <input class="bs-input" type="text" name="language" placeholder="Vietnamese" value="Vietnamese">
+          </div>
+        </div>
+        <!-- Row 4 - description + preview -->
+        <div style="display: flex; gap: 24px; margin-bottom: 24px; align-items: flex-start;">
+          <div class="form-group" style="flex: 1;">
+            <label class="bs-label">Mô tả sách</label>
+            <textarea class="bs-input bs-textarea" name="description" placeholder="Nội dung giới thiệu sách..." rows="3"></textarea>
+          </div>
+          <div>
+            <label class="bs-label">Xem trước</label>
+            <img id="coverPreview" src="" alt=""
+                 style="width:90px; height:125px; object-fit:cover; border-radius:8px; border:1px solid var(--border); display:none; box-shadow:0 4px 6px rgba(0,0,0,0.05);">
+            <div id="coverPlaceholder" style="width:90px; height:125px; background:#f1f5f9; border-radius:8px; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:#cbd5e1; font-size:1.8rem;">📷</div>
+          </div>
+        </div>
+        <button type="submit" class="btn-submit">Lưu thông tin sách</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- BOOK TABLE -->
+  <div class="table-card">
+    <div class="table-card-header">
+      <h2><div class="icon-box" style="background:rgba(16, 185, 129, 0.1); color:var(--green);"><i class="fas fa-list"></i></div> Kho sách</h2>
+      {% if books %}
+      <span class="table-count">{{ books|length }} danh mục</span>
+      {% endif %}
+    </div>
+
+    <div class="table-toolbar">
+      <div class="search-wrap">
+        <i class="fas fa-search"></i>
+        <input class="table-search" type="text" id="tableSearch" placeholder="Tìm kiếm theo ID, Tên, Tác giả...">
+      </div>
+    </div>
+
+    {% if books %}
+    <div style="overflow-x:auto;">
+      <table class="bs-table" id="bookTable">
+        <thead>
+          <tr>
+            <th width="5%">ID</th>
+            <th width="8%">Ảnh</th>
+            <th width="30%">Tên sách</th>
+            <th width="15%">Tác giả</th>
+            <th width="14%">Giá bán</th>
+            <th width="13%">Kho</th>
+            <th width="15%">Thao tác</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for book in books %}
+          <tr>
+            <td><strong style="color:var(--text-muted);">#{{ book.id }}</strong></td>
+            <td>
+              {% if book.cover_image %}
+                <img src="{{ book.cover_image }}" alt="{{ book.title }}" class="book-thumb"
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <div class="book-thumb-placeholder" style="display:none">📖</div>
+              {% else %}
+                <div class="book-thumb-placeholder">📖</div>
+              {% endif %}
+            </td>
+            <td>
+              <div class="book-title-cell">{{ book.title }}</div>
+              {% if book.publisher %}<div class="book-author-cell">{{ book.publisher }}</div>{% endif %}
+            </td>
+            <td style="color:var(--text);font-size:0.9rem;font-weight:500;">{{ book.author }}</td>
+            <td>
+              <div class="price-cell">{{ book.price|floatformat:0 }}₫</div>
+              {% if book.original_price and book.original_price > book.price %}
+                <div class="price-original">{{ book.original_price|floatformat:0 }}₫</div>
+              {% endif %}
+            </td>
+            <td>
+              {% if book.stock > 10 %}
+                <span class="badge-stock-high"><i class="fas fa-check-circle"></i> {{ book.stock }}</span>
+              {% elif book.stock > 0 %}
+                <span class="badge-stock-low"><i class="fas fa-exclamation-circle"></i> {{ book.stock }}</span>
+              {% else %}
+                <span class="badge-stock-none"><i class="fas fa-times-circle"></i> Hết</span>
+              {% endif %}
+            </td>
+            <td>
+              <div style="display:flex; gap:8px;">
+                <a href="/staff/books/{{ book.id }}/edit/" class="btn-edit-sm"><i class="fas fa-pen"></i></a>
+                <form method="POST" action="/staff/books/{{ book.id }}/delete/" style="display:inline;" onsubmit="return confirm('Bạn chắc chắn muốn xóa sách này?');">
+                  {% csrf_token %}
+                  <button type="submit" class="btn-del-sm"><i class="fas fa-trash"></i></button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <div class="empty-icon">📦</div>
+      <h3 style="font-family:'Outfit',sans-serif;font-weight:700;color:var(--text);margin-bottom:8px;">Chưa có sách nào</h3>
+      <p>Thêm sách đầu tiên bằng form bên trên!</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function previewCover(url) {
+  const img = document.getElementById('coverPreview');
+  const ph = document.getElementById('coverPlaceholder');
+  if (url) {
+    img.src = url;
+    img.style.display = 'block';
+    ph.style.display = 'none';
+    img.onerror = () => { img.style.display = 'none'; ph.style.display = 'flex'; };
+  } else {
+    img.style.display = 'none';
+    ph.style.display = 'flex';
+  }
+}
+document.getElementById('tableSearch').addEventListener('input', function() {
+  const q = this.value.toLowerCase();
+  document.querySelectorAll('#bookTable tbody tr').forEach(row => {
+    row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+});
+</script>
+</body>
+</html>
