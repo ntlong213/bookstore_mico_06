@@ -20,6 +20,10 @@ class OrderListCreate(APIView):
         customer_id = request.data.get('customer_id')
         payment_method = request.data.get('payment_method', 'cash')
         shipping_address = request.data.get('shipping_address', '')
+        internal_headers = {'Content-Type': 'application/json'}
+        auth_header = request.headers.get('Authorization', '')
+        if auth_header:
+            internal_headers['Authorization'] = auth_header
 
         # Lấy cart của customer
         try:
@@ -63,22 +67,26 @@ class OrderListCreate(APIView):
 
         # Trigger payment
         try:
-            requests.post(f"{PAY_SERVICE_URL}/payments/", json={
+            pay_r = requests.post(f"{PAY_SERVICE_URL}/payments/", json={
                 "order_id": order.id,
                 "amount": str(total),
                 "method": payment_method
-            }, timeout=5)
-        except:
-            pass
+            }, headers=internal_headers, timeout=5)
+            if pay_r.status_code not in (200, 201):
+                return Response({"error": "Payment service failed", "detail": pay_r.text[:200]}, status=502)
+        except Exception:
+            return Response({"error": "Payment service unavailable"}, status=503)
 
         # Trigger shipping
         try:
-            requests.post(f"{SHIP_SERVICE_URL}/shipments/", json={
+            ship_r = requests.post(f"{SHIP_SERVICE_URL}/shipments/", json={
                 "order_id": order.id,
                 "address": shipping_address
-            }, timeout=5)
-        except:
-            pass
+            }, headers=internal_headers, timeout=5)
+            if ship_r.status_code not in (200, 201):
+                return Response({"error": "Shipping service failed", "detail": ship_r.text[:200]}, status=502)
+        except Exception:
+            return Response({"error": "Shipping service unavailable"}, status=503)
 
         order.status = 'confirmed'
         order.save()

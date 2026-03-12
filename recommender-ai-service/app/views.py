@@ -1,7 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 import requests
-from collections import Counter
 
 COMMENT_SERVICE_URL = "http://comment-rate-service:8000"
 BOOK_SERVICE_URL = "http://book-service:8000"
@@ -11,8 +10,10 @@ class RecommendBooks(APIView):
         """Recommend sách dựa trên rating cao nhất"""
         try:
             # Lấy tất cả ratings
-            ratings_r = requests.get(f"{COMMENT_SERVICE_URL}/ratings/", timeout=5)
+            ratings_r = requests.get(f"{COMMENT_SERVICE_URL}/comments/", timeout=5)
             all_ratings = ratings_r.json()
+            if not isinstance(all_ratings, list):
+                all_ratings = all_ratings.get('results', []) if isinstance(all_ratings, dict) else []
 
             # Lọc bỏ sách customer đã đọc
             customer_books = {r['book_id'] for r in all_ratings if r['customer_id'] == customer_id}
@@ -41,9 +42,12 @@ class RecommendBooks(APIView):
             # Fallback: trả về sách ngẫu nhiên
             try:
                 books_r = requests.get(f"{BOOK_SERVICE_URL}/books/", timeout=5)
+                books_data = books_r.json()
+                if not isinstance(books_data, list):
+                    books_data = books_data.get('results', []) if isinstance(books_data, dict) else []
                 return Response({
                     "customer_id": customer_id,
-                    "recommendations": books_r.json()[:5],
+                    "recommendations": books_data[:5],
                     "note": "Fallback recommendations"
                 })
             except:

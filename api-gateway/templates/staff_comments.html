@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quản lý đánh giá — BookStore Staff</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap"
+    rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -21,357 +24,846 @@
       --warning: #f59e0b;
       --danger: #ef4444;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--bg); font-family: 'Inter', sans-serif; color: var(--text); overflow-x: hidden; }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      overflow-x: hidden;
+    }
 
     /* LAYOUT */
-    .app-layout { display: flex; min-height: 100vh; }
-    
+    .app-layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
     /* SIDEBAR */
-    .sidebar { width: 260px; background: var(--sidebar-bg); color: #cbd5e1; display: flex; flex-direction: column; flex-shrink: 0; position: fixed; top: 0; bottom: 0; left: 0; z-index: 1000; transition: transform 0.3s; }
-    .sidebar-header { padding: 24px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-    .sidebar-brand { font-family: 'Outfit', sans-serif; font-size: 1.5rem; font-weight: 800; color: white; text-decoration: none; display: flex; align-items: center; gap: 10px; }
-    .sidebar-brand span { color: var(--primary); }
-    .sidebar-brand:hover { color: white; }
-    
-    .sidebar-menu { flex: 1; padding: 20px 16px; display: flex; flex-direction: column; gap: 8px; overflow-y: auto; }
-    .menu-label { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #64748b; margin: 16px 8px 8px; letter-spacing: 0.5px; }
-    .menu-link { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: #cbd5e1; text-decoration: none; border-radius: 10px; font-weight: 500; font-size: 0.95rem; transition: all 0.2s; }
-    .menu-link i { font-size: 1.1rem; width: 24px; text-align: center; }
-    .menu-link:hover { background: var(--sidebar-hover); color: white; }
-    .menu-link.active { background: var(--primary); color: white; font-weight: 600; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3); }
-    
-    .sidebar-footer { padding: 20px; border-top: 1px solid rgba(255,255,255,0.05); }
-    .user-profile { display: flex; align-items: center; gap: 12px; color: white; text-decoration: none; }
-    .user-avatar { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, var(--primary), #818cf8); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; }
-    .user-info { display: flex; flex-direction: column; }
-    .user-name { font-weight: 600; font-size: 0.9rem; }
-    .user-role { font-size: 0.75rem; color: #94a3b8; text-transform: capitalize; }
+    .sidebar {
+      width: 260px;
+      background: var(--sidebar-bg);
+      color: #cbd5e1;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1000;
+      transition: transform 0.3s;
+    }
+
+    .sidebar-header {
+      padding: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .sidebar-brand {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar-brand span {
+      color: var(--primary);
+    }
+
+    .sidebar-brand:hover {
+      color: white;
+    }
+
+    .sidebar-menu {
+      flex: 1;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow-y: auto;
+    }
+
+    .menu-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: #64748b;
+      margin: 16px 8px 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .menu-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      color: #cbd5e1;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+
+    .menu-link i {
+      font-size: 1.1rem;
+      width: 24px;
+      text-align: center;
+    }
+
+    .menu-link:hover {
+      background: var(--sidebar-hover);
+      color: white;
+    }
+
+    .menu-link.active {
+      background: var(--primary);
+      color: white;
+      font-weight: 600;
+      box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);
+    }
+
+    .sidebar-footer {
+      padding: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: white;
+      text-decoration: none;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), #818cf8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .user-name {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .user-role {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      text-transform: capitalize;
+    }
 
     /* MAIN CONTENT */
-    .main-content { flex: 1; margin-left: 260px; display: flex; flex-direction: column; min-width: 0; }
-    
+    .main-content {
+      flex: 1;
+      margin-left: 260px;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
     /* TOPBAR */
-    .topbar { background: var(--surface); padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 99; }
-    .topbar-left { display: flex; align-items: center; gap: 16px; }
-    .sidebar-toggle { display: none; background: none; border: none; font-size: 1.2rem; color: var(--text); cursor: pointer; }
-    .page-title { font-family: 'Outfit', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--text); margin: 0; }
-    
-    .topbar-right { display: flex; align-items: center; gap: 16px; }
-    .btn-topbar { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); background: #f1f5f9; border: none; cursor: pointer; transition: all 0.2s; text-decoration: none; }
-    .btn-topbar:hover { background: #e2e8f0; color: var(--text); }
-    
+    .topbar {
+      background: var(--surface);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 99;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .sidebar-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .page-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn-topbar {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      background: #f1f5f9;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .btn-topbar:hover {
+      background: #e2e8f0;
+      color: var(--text);
+    }
+
     /* CONTENT AREA */
-    .content-area { padding: 32px; flex: 1; }
+    .content-area {
+      padding: 32px;
+      flex: 1;
+    }
 
     /* MINI STATS */
-    .stats-mini { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
-    .stat-mini { background: var(--surface); border-radius: 16px; padding: 20px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); display: flex; align-items: center; gap: 16px; }
-    .stat-mini-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0; }
-    .ic-total { background: #f1f5f9; color: var(--primary); }
-    .ic-reply { background: #dcfce7; color: var(--accent); }
-    .ic-pend { background: #fee2e2; color: var(--danger); }
-    .ic-avg { background: #fef3c7; color: var(--warning); }
-    .stat-mini-info { display: flex; flex-direction: column; }
-    .stat-mini-num { font-family: 'Outfit', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--text); line-height: 1.2; }
-    .stat-mini-label { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+    .stats-mini {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-mini {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .stat-mini-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    .ic-total {
+      background: #f1f5f9;
+      color: var(--primary);
+    }
+
+    .ic-reply {
+      background: #dcfce7;
+      color: var(--accent);
+    }
+
+    .ic-pend {
+      background: #fee2e2;
+      color: var(--danger);
+    }
+
+    .ic-avg {
+      background: #fef3c7;
+      color: var(--warning);
+    }
+
+    .stat-mini-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-mini-num {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    .stat-mini-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
 
     /* FILTER BAR */
-    .filter-bar { background: var(--surface); border-radius: 16px; padding: 20px; border: 1px solid var(--border); display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 32px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); }
-    .search-wrapper { position: relative; flex: 1; min-width: 250px; }
-    .search-wrapper i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
-    .search-wrapper input { width: 100%; border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px 12px 40px; font-size: 0.95rem; font-family: 'Inter', sans-serif; outline: none; transition: all 0.2s; background: #f8fafc; }
-    .search-wrapper input:focus { border-color: var(--primary); background: white; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
-    
-    .filter-btn { padding: 10px 18px; border-radius: 10px; border: 1px solid var(--border); background: white; color: var(--text); font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: all 0.2s; }
-    .filter-btn:hover { background: #f1f5f9; }
-    .filter-btn.active { background: var(--primary); border-color: var(--primary); color: white; box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2); }
+    .filter-bar {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid var(--border);
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 32px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+    }
+
+    .search-wrapper {
+      position: relative;
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .search-wrapper i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+    }
+
+    .search-wrapper input {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px 12px 40px;
+      font-size: 0.95rem;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: all 0.2s;
+      background: #f8fafc;
+    }
+
+    .search-wrapper input:focus {
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+    .filter-btn {
+      padding: 10px 18px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-btn:hover {
+      background: #f1f5f9;
+    }
+
+    .filter-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+      box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
+    }
 
     /* COMMENT CARD */
-    .comment-card { background: var(--surface); border-radius: 16px; border: 1px solid var(--border); padding: 24px; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); transition: all 0.2s; }
-    .comment-card:hover { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); border-color: #cbd5e1; }
-    .comment-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 12px; }
-    
-    .commenter { display: flex; align-items: center; gap: 14px; }
-    .avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #e2e8f0, #cbd5e1); display: flex; align-items: center; justify-content: center; color: var(--text); font-weight: 700; font-size: 1rem; flex-shrink: 0; }
-    .commenter-name { font-weight: 700; color: var(--text); font-size: 1rem; margin-bottom: 2px; }
-    .commenter-meta { font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
-    
-    .rating-badge { background: #fffbeb; border: 1px solid #fde68a; border-radius: 20px; padding: 6px 14px; font-size: 0.85rem; font-weight: 700; color: #92400e; display: flex; align-items: center; gap: 6px; }
-    .stars { color: var(--warning); font-size: 0.95rem; }
-    .star-empty { color: #cbd5e1; }
-    
-    .comment-book { background: #f8fafc; border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; font-size: 0.9rem; color: var(--text); display: flex; align-items: center; gap: 8px; border: 1px solid var(--border); }
-    .comment-text { color: var(--text); font-size: 0.95rem; line-height: 1.6; margin-bottom: 16px; }
-    
-    .reply-section { border-top: 1px dashed var(--border); padding-top: 20px; }
-    .existing-reply { background: #f0fdf4; border-radius: 10px; padding: 14px 18px; font-size: 0.9rem; color: #166534; margin-bottom: 16px; display: flex; gap: 10px; border: 1px solid #bbf7d0; line-height: 1.5; }
-    
-    .reply-form { display: flex; gap: 12px; align-items: flex-start; }
-    .reply-input { flex: 1; border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; font-size: 0.95rem; outline: none; font-family: 'Inter', sans-serif; resize: none; background: #f8fafc; transition: border 0.2s; }
-    .reply-input:focus { border-color: var(--primary); background: white; }
-    .reply-btn { background: var(--primary); color: white; border: none; border-radius: 10px; padding: 12px 20px; font-weight: 600; font-size: 0.95rem; cursor: pointer; white-space: nowrap; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
-    .reply-btn:hover { background: var(--primary-hover); transform: translateY(-1px); box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2); }
-    .reply-btn:disabled { background: #cbd5e1; cursor: not-allowed; transform: none; box-shadow: none; }
+    .comment-card {
+      background: var(--surface);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+      transition: all 0.2s;
+    }
+
+    .comment-card:hover {
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+      border-color: #cbd5e1;
+    }
+
+    .comment-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .commenter {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text);
+      font-weight: 700;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .commenter-name {
+      font-weight: 700;
+      color: var(--text);
+      font-size: 1rem;
+      margin-bottom: 2px;
+    }
+
+    .commenter-meta {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .rating-badge {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #92400e;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .stars {
+      color: var(--warning);
+      font-size: 0.95rem;
+    }
+
+    .star-empty {
+      color: #cbd5e1;
+    }
+
+    .comment-book {
+      background: #f8fafc;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-bottom: 16px;
+      font-size: 0.9rem;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .comment-text {
+      color: var(--text);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .reply-section {
+      border-top: 1px dashed var(--border);
+      padding-top: 20px;
+    }
+
+    .existing-reply {
+      background: #f0fdf4;
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 0.9rem;
+      color: #166534;
+      margin-bottom: 16px;
+      display: flex;
+      gap: 10px;
+      border: 1px solid #bbf7d0;
+      line-height: 1.5;
+    }
+
+    .reply-form {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .reply-input {
+      flex: 1;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 0.95rem;
+      outline: none;
+      font-family: 'Inter', sans-serif;
+      resize: none;
+      background: #f8fafc;
+      transition: border 0.2s;
+    }
+
+    .reply-input:focus {
+      border-color: var(--primary);
+      background: white;
+    }
+
+    .reply-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 20px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .reply-btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
+    }
+
+    .reply-btn:disabled {
+      background: #cbd5e1;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
 
     /* EMPTY STATE */
-    .empty-state { text-align: center; padding: 80px 20px; background: var(--surface); border-radius: 16px; border: 1px solid var(--border); }
-    .empty-state i { font-size: 4rem; color: #cbd5e1; margin-bottom: 20px; display: block; }
-    .empty-state h3 { font-family: 'Outfit', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
-    .empty-state p { color: var(--text-muted); font-size: 1rem; }
+    .empty-state {
+      text-align: center;
+      padding: 80px 20px;
+      background: var(--surface);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+    }
+
+    .empty-state i {
+      font-size: 4rem;
+      color: #cbd5e1;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .empty-state h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .empty-state p {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
 
     @media(max-width:992px) {
-      .sidebar { transform: translateX(-100%); }
-      .sidebar.open { transform: translateX(0); box-shadow: 4px 0 24px rgba(0,0,0,0.2); }
-      .main-content { margin-left: 0; }
-      .sidebar-toggle { display: block; }
-      .reply-form { flex-direction: column; }
-      .reply-btn { align-self: flex-end; }
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+        box-shadow: 4px 0 24px rgba(0, 0, 0, 0.2);
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      .sidebar-toggle {
+        display: block;
+      }
+
+      .reply-form {
+        flex-direction: column;
+      }
+
+      .reply-btn {
+        align-self: flex-end;
+      }
     }
   </style>
 </head>
+
 <body>
 
-<div class="app-layout">
-  
-  <!-- SIDEBAR -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <a href="/staff/" class="sidebar-brand">
-        <i class="fas fa-layer-group text-primary"></i>
-        <span>BookStore</span> Staff
-      </a>
-    </div>
-    
-    <div class="sidebar-menu">
-      <div class="menu-label">Tổng quan</div>
-      <a href="/staff/" class="menu-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-      
-      <div class="menu-label">Quản lý Cửa hàng</div>
-      <a href="/books/manage/" class="menu-link"><i class="fas fa-book"></i> Quản lý Sách</a>
-      <a href="/staff/comments/" class="menu-link active"><i class="fas fa-comments"></i> Đánh giá khách</a>
-      <a href="/orders/new/" class="menu-link"><i class="fas fa-file-invoice"></i> Tạo đơn hàng</a>
-      
-      <div class="menu-label">Hệ thống</div>
-      <a href="/" class="menu-link"><i class="fas fa-store"></i> Quay lại cửa hàng</a>
-    </div>
-    
-    <div class="sidebar-footer">
-      <a href="#" class="user-profile">
-        <div class="user-avatar">{{ user.username|first|upper|default:"S" }}</div>
-        <div class="user-info">
-          <span class="user-name">{{ user.username|default:"Staff" }}</span>
-          <span class="user-role">{{ role|default:"Staff Member" }}</span>
-        </div>
-      </a>
-    </div>
-  </aside>
+  <div class="app-layout">
 
-  <!-- MAIN CONTENT -->
-  <main class="main-content">
-    
-    <!-- TOPBAR -->
-    <header class="topbar">
-      <div class="topbar-left">
-        <button class="sidebar-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
-        <h1 class="page-title">Đánh giá của Khách hàng</h1>
-      </div>
-      <div class="topbar-right">
-        <a href="/" class="btn-topbar" title="Cửa hàng"><i class="fas fa-globe"></i></a>
-        <a href="/logout/" class="btn-topbar" title="Đăng xuất"><i class="fas fa-sign-out-alt"></i></a>
-      </div>
-    </header>
-    
-    <!-- CONTENT -->
-    <div class="content-area">
-
-      <!-- MINI STATS -->
-      <div class="stats-mini">
-        <div class="stat-mini">
-          <div class="stat-mini-icon ic-total"><i class="fas fa-comment-dots"></i></div>
-          <div class="stat-mini-info">
-            <span class="stat-mini-num" id="totalCount">{{ comments|length }}</span>
-            <span class="stat-mini-label">Tổng đánh giá</span>
-          </div>
-        </div>
-        <div class="stat-mini">
-          <div class="stat-mini-icon ic-reply"><i class="fas fa-check-circle"></i></div>
-          <div class="stat-mini-info">
-            <span class="stat-mini-num" id="replyCount">0</span>
-            <span class="stat-mini-label">Đã phản hồi</span>
-          </div>
-        </div>
-        <div class="stat-mini">
-          <div class="stat-mini-icon ic-pend"><i class="fas fa-clock"></i></div>
-          <div class="stat-mini-info">
-            <span class="stat-mini-num" id="pendingCount">0</span>
-            <span class="stat-mini-label">Chưa phản hồi</span>
-          </div>
-        </div>
-        <div class="stat-mini">
-          <div class="stat-mini-icon ic-avg"><i class="fas fa-star"></i></div>
-          <div class="stat-mini-info">
-            <span class="stat-mini-num" id="avgRating">—</span>
-            <span class="stat-mini-label">Điểm trung bình</span>
-          </div>
-        </div>
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <a href="/staff/" class="sidebar-brand">
+          <i class="fas fa-layer-group text-primary"></i>
+          <span>BookStore</span> Staff
+        </a>
       </div>
 
-      <!-- FILTER BAR -->
-      <div class="filter-bar">
-        <div class="search-wrapper">
-          <i class="fas fa-search"></i>
-          <input type="text" id="searchInput" placeholder="Tìm theo tên sách, nội dung, khách hàng...">
-        </div>
-        <button class="filter-btn active" onclick="filterRating('all', this)">Tất cả</button>
-        <button class="filter-btn" onclick="filterRating(5, this)">⭐ 5 sao</button>
-        <button class="filter-btn" onclick="filterRating(4, this)">⭐ 4 sao</button>
-        <button class="filter-btn" onclick="filterRating(3, this)">⭐ 3 sao</button>
-        <button class="filter-btn" onclick="filterRating(2, this)">⭐ ≤2 sao</button>
+      <div class="sidebar-menu">
+        <div class="menu-label">Tổng quan</div>
+        <a href="/staff/" class="menu-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+
+        <div class="menu-label">Quản lý Cửa hàng</div>
+        <a href="/staff/books/" class="menu-link"><i class="fas fa-book"></i> Quản lý Sách</a>
+        <a href="/staff/comments/" class="menu-link active"><i class="fas fa-comments"></i> Đánh giá khách</a>
+        <a href="/orders/new/" class="menu-link"><i class="fas fa-file-invoice"></i> Tạo đơn hàng</a>
+
+        <div class="menu-label">Hệ thống</div>
+        <a href="/" class="menu-link"><i class="fas fa-store"></i> Quay lại cửa hàng</a>
       </div>
 
-      <!-- COMMENT LIST -->
-      <div id="commentList">
-        {% for comment in comments %}
-        <div class="comment-card" data-rating="{{ comment.rating|default:5 }}" data-text="{{ comment.content|default:'' }} {{ comment.book_title|default:'' }} {{ comment.username|default:'' }}">
-          <div class="comment-header">
-            <div class="commenter">
-              <div class="avatar">{{ comment.username|first|upper|default:"K" }}</div>
-              <div>
-                <div class="commenter-name">{{ comment.username|default:"Khách hàng" }}</div>
-                <div class="commenter-meta"><i class="far fa-clock"></i> {{ comment.created_at|default:"" }}</div>
-              </div>
+      <div class="sidebar-footer">
+        <a href="#" class="user-profile">
+          <div class="user-avatar">{{ user.username|first|upper|default:"S" }}</div>
+          <div class="user-info">
+            <span class="user-name">{{ user.username|default:"Staff" }}</span>
+            <span class="user-role">{{ role|default:"Staff Member" }}</span>
+          </div>
+        </a>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+      <!-- TOPBAR -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+          <h1 class="page-title">Đánh giá của Khách hàng</h1>
+        </div>
+        <div class="topbar-right">
+          <a href="/" class="btn-topbar" title="Cửa hàng"><i class="fas fa-globe"></i></a>
+          <a href="/logout/" class="btn-topbar" title="Đăng xuất"><i class="fas fa-sign-out-alt"></i></a>
+        </div>
+      </header>
+
+      <!-- CONTENT -->
+      <div class="content-area">
+
+        <!-- MINI STATS -->
+        <div class="stats-mini">
+          <div class="stat-mini">
+            <div class="stat-mini-icon ic-total"><i class="fas fa-comment-dots"></i></div>
+            <div class="stat-mini-info">
+              <span class="stat-mini-num" id="totalCount">{{ comments|length }}</span>
+              <span class="stat-mini-label">Tổng đánh giá</span>
             </div>
-            
-            <div class="rating-badge">
-              <div class="stars">
-                {% for i in "12345" %}
-                  {% if forloop.counter <= comment.rating|default:5 %}
-                    <i class="fas fa-star"></i>
-                  {% else %}
+          </div>
+          <div class="stat-mini">
+            <div class="stat-mini-icon ic-reply"><i class="fas fa-check-circle"></i></div>
+            <div class="stat-mini-info">
+              <span class="stat-mini-num" id="replyCount">0</span>
+              <span class="stat-mini-label">Đã phản hồi</span>
+            </div>
+          </div>
+          <div class="stat-mini">
+            <div class="stat-mini-icon ic-pend"><i class="fas fa-clock"></i></div>
+            <div class="stat-mini-info">
+              <span class="stat-mini-num" id="pendingCount">0</span>
+              <span class="stat-mini-label">Chưa phản hồi</span>
+            </div>
+          </div>
+          <div class="stat-mini">
+            <div class="stat-mini-icon ic-avg"><i class="fas fa-star"></i></div>
+            <div class="stat-mini-info">
+              <span class="stat-mini-num" id="avgRating">—</span>
+              <span class="stat-mini-label">Điểm trung bình</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FILTER BAR -->
+        <div class="filter-bar">
+          <div class="search-wrapper">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Tìm theo tên sách, nội dung, khách hàng...">
+          </div>
+          <button class="filter-btn active" onclick="filterRating('all', this)">Tất cả</button>
+          <button class="filter-btn" onclick="filterRating(5, this)">⭐ 5 sao</button>
+          <button class="filter-btn" onclick="filterRating(4, this)">⭐ 4 sao</button>
+          <button class="filter-btn" onclick="filterRating(3, this)">⭐ 3 sao</button>
+          <button class="filter-btn" onclick="filterRating(2, this)">⭐ ≤2 sao</button>
+        </div>
+
+        <!-- COMMENT LIST -->
+        <div id="commentList">
+          {% for comment in comments %}
+          <div class="comment-card" data-rating="{{ comment.rating|default:5 }}"
+            data-text="{{ comment.content|default:'' }} {{ comment.book_title|default:'' }} {{ comment.username|default:'' }}">
+            <div class="comment-header">
+              <div class="commenter">
+                <div class="avatar">{{ comment.username|first|upper|default:"K" }}</div>
+                <div>
+                  <div class="commenter-name">{{ comment.username|default:"Khách hàng" }}</div>
+                  <div class="commenter-meta"><i class="far fa-clock"></i> {{ comment.created_at|default:"" }}</div>
+                </div>
+              </div>
+
+              <div class="rating-badge">
+                <div class="stars">
+                  {% for i in "12345" %}
+                  {% if forloop.counter <= comment.rating|default:5 %} <i class="fas fa-star"></i>
+                    {% else %}
                     <i class="far fa-star star-empty"></i>
-                  {% endif %}
-                {% endfor %}
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                {{ comment.rating|default:5 }}/5
               </div>
-              {{ comment.rating|default:5 }}/5
             </div>
-          </div>
 
-          {% if comment.book_title %}
-          <div class="comment-book">
-            <i class="fas fa-book text-primary"></i>
-            <strong>Sách:</strong> {{ comment.book_title }}
-          </div>
-          {% endif %}
-
-          <div class="comment-text">{{ comment.content|default:"Không có nội dung." }}</div>
-
-          <div class="reply-section">
-            {% if comment.reply %}
-            <div class="existing-reply">
-              <i class="fas fa-reply" style="margin-top:2px;"></i>
-              <div><strong>Phản hồi của Staff:</strong> {{ comment.reply }}</div>
+            {% if comment.book_title %}
+            <div class="comment-book">
+              <i class="fas fa-book text-primary"></i>
+              <strong>Sách:</strong> {{ comment.book_title }}
             </div>
             {% endif %}
-            <div class="reply-form">
-              <textarea class="reply-input" rows="2" placeholder="Viết phản hồi cho khách hàng..."></textarea>
-              <button class="reply-btn" onclick="submitReply(this, {{ comment.id|default:0 }})">
-                <i class="fas fa-paper-plane"></i> Gửi phản hồi
-              </button>
+
+            <div class="comment-text">{{ comment.content|default:"Không có nội dung." }}</div>
+
+            <div class="reply-section">
+              {% if comment.reply %}
+              <div class="existing-reply">
+                <i class="fas fa-reply" style="margin-top:2px;"></i>
+                <div><strong>Phản hồi của Staff:</strong> {{ comment.reply }}</div>
+              </div>
+              {% endif %}
+              <div class="reply-form">
+                <textarea class="reply-input" rows="2" placeholder="Viết phản hồi cho khách hàng..."></textarea>
+                <button class="reply-btn" onclick="submitReply(this, {{ comment.id|default:0 }})">
+                  <i class="fas fa-paper-plane"></i> Gửi phản hồi
+                </button>
+              </div>
             </div>
           </div>
+          {% empty %}
+          <div class="empty-state">
+            <i class="fas fa-inbox"></i>
+            <h3>Chưa có đánh giá nào</h3>
+            <p>BooksStore hiện tại chưa nhận được phản hồi nào từ khách hàng.</p>
+          </div>
+          {% endfor %}
         </div>
-        {% empty %}
-        <div class="empty-state">
-          <i class="fas fa-inbox"></i>
-          <h3>Chưa có đánh giá nào</h3>
-          <p>BooksStore hiện tại chưa nhận được phản hồi nào từ khách hàng.</p>
-        </div>
-        {% endfor %}
+
       </div>
-      
-    </div>
-  </main>
-</div>
+    </main>
+  </div>
 
-<script>
-  function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('open');
-  }
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+    }
 
-  // Stats
-  const cards = document.querySelectorAll('.comment-card');
-  let replied = 0, ratings = [];
-  cards.forEach(c => {
-    if (c.querySelector('.existing-reply')) replied++;
-    ratings.push(parseInt(c.dataset.rating) || 5);
-  });
-  document.getElementById('replyCount').textContent = replied;
-  document.getElementById('pendingCount').textContent = cards.length - replied;
-  if (ratings.length) {
-    const avg = ratings.reduce((a,b) => a+b, 0) / ratings.length;
-    document.getElementById('avgRating').textContent = avg.toFixed(1);
-  }
-
-  // Search
-  document.getElementById('searchInput').addEventListener('input', function() {
-    const q = this.value.toLowerCase();
+    // Stats
+    const cards = document.querySelectorAll('.comment-card');
+    let replied = 0, ratings = [];
     cards.forEach(c => {
-      c.style.display = c.dataset.text.toLowerCase().includes(q) ? '' : 'none';
+      if (c.querySelector('.existing-reply')) replied++;
+      ratings.push(parseInt(c.dataset.rating) || 5);
     });
-  });
+    document.getElementById('replyCount').textContent = replied;
+    document.getElementById('pendingCount').textContent = cards.length - replied;
+    if (ratings.length) {
+      const avg = ratings.reduce((a, b) => a + b, 0) / ratings.length;
+      document.getElementById('avgRating').textContent = avg.toFixed(1);
+    }
 
-  // Filter by rating
-  let activeRating = 'all';
-  function filterRating(val, btn) {
-    activeRating = val;
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    cards.forEach(c => {
-      const r = parseInt(c.dataset.rating);
-      if (val === 'all') c.style.display = '';
-      else if (val === 2) c.style.display = r <= 2 ? '' : 'none';
-      else c.style.display = r === val ? '' : 'none';
+    // Search
+    document.getElementById('searchInput').addEventListener('input', function () {
+      const q = this.value.toLowerCase();
+      cards.forEach(c => {
+        c.style.display = c.dataset.text.toLowerCase().includes(q) ? '' : 'none';
+      });
     });
-  }
 
-  // Reply submit
-  function submitReply(btn, commentId) {
-    const textarea = btn.previousElementSibling;
-    const text = textarea.value.trim();
-    if (!text) { textarea.focus(); return; }
-    
-    btn.disabled = true;
-    const originalText = btn.innerHTML;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang gửi...';
+    // Filter by rating
+    let activeRating = 'all';
+    function filterRating(val, btn) {
+      activeRating = val;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      cards.forEach(c => {
+        const r = parseInt(c.dataset.rating);
+        if (val === 'all') c.style.display = '';
+        else if (val === 2) c.style.display = r <= 2 ? '' : 'none';
+        else c.style.display = r === val ? '' : 'none';
+      });
+    }
 
-    fetch(`/api/comment/comments/${commentId}/reply/`, {
-      method: 'POST',
-      headers: {'Content-Type':'application/json', 'X-CSRFToken': getCookie('csrftoken')},
-      body: JSON.stringify({reply: text})
-    })
-    .finally(() => {
-      // Vì API có thể lỗi hoặc load lâu, ta cập nhật UI optimistic
-      const replySection = btn.closest('.reply-section');
-      const existing = replySection.querySelector('.existing-reply');
-      if (existing) existing.remove();
-      
-      const div = document.createElement('div');
-      div.className = 'existing-reply';
-      div.innerHTML = `<i class="fas fa-reply" style="margin-top:2px;"></i><div><strong>Phản hồi của Staff:</strong> ${text}</div>`;
-      
-      replySection.insertBefore(div, replySection.querySelector('.reply-form'));
-      textarea.value = '';
-      btn.disabled = false;
-      btn.innerHTML = originalText;
-    });
-  }
+    // Reply submit
+    function submitReply(btn, commentId) {
+      const textarea = btn.previousElementSibling;
+      const text = textarea.value.trim();
+      if (!text) { textarea.focus(); return; }
 
-  function getCookie(name) {
-    const v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
-    return v ? v[2] : null;
-  }
-</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+      btn.disabled = true;
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang gửi...';
+
+      fetch(`/api/comment/comments/${commentId}/reply/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken') },
+        body: JSON.stringify({ reply: text })
+      })
+        .finally(() => {
+          // Vì API có thể lỗi hoặc load lâu, ta cập nhật UI optimistic
+          const replySection = btn.closest('.reply-section');
+          const existing = replySection.querySelector('.existing-reply');
+          if (existing) existing.remove();
+
+          const div = document.createElement('div');
+          div.className = 'existing-reply';
+          div.innerHTML = `<i class="fas fa-reply" style="margin-top:2px;"></i><div><strong>Phản hồi của Staff:</strong> ${text}</div>`;
+
+          replySection.insertBefore(div, replySection.querySelector('.reply-form'));
+          textarea.value = '';
+          btn.disabled = false;
+          btn.innerHTML = originalText;
+        });
+    }
+
+    function getCookie(name) {
+      const v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+      return v ? v[2] : null;
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

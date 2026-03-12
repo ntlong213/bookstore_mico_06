@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from functools import wraps
 from .jwt_middleware import SECRET_KEY
 import json
+from decimal import Decimal, InvalidOperation
 
 logger = logging.getLogger(__name__)
 
@@ -295,15 +296,22 @@ def add_to_cart(request):
                 request.session['cart'][book_id] = quantity
             request.session.modified = True
         
-        # Đồng thời gửi tới backend
+        # Đồng thời gửi tới cart-service (best effort)
         if customer_id:
-            data = {
-                'book_id': book_id,
-                'quantity': quantity,
-            }
             try:
+                cart_resp = requests.post(
+                    f"{SERVICES['cart']}/carts/",
+                    json={'customer_id': customer_id},
+                    headers=headers, timeout=5
+                )
+                cart_id = (cart_resp.json() or {}).get('id')
+                data = {
+                    'cart_id': cart_id,
+                    'book_id': book_id,
+                    'quantity': quantity,
+                }
                 requests.post(
-                    f"{SERVICES['cart']}/carts/{customer_id}/items/",
+                    f"{SERVICES['cart']}/cart-items/",
                     json=data, headers=headers, timeout=5
                 )
             except:
@@ -316,6 +324,134 @@ def add_to_cart(request):
     return redirect('home')
 
 
+def _build_cart_details(request, headers):
+    """Build cart items enriched with book data + amount summary from session."""
+    def _to_vnd_int(value):
+        """Convert book-service price payload to integer VND safely."""
+        try:
+            return int(Decimal(str(value or 0)))
+        except (InvalidOperation, ValueError, TypeError):
+            return 0
+
+    session_cart = request.session.get('cart', {})
+    cart_items = []
+    subtotal = 0
+    total_quantity = 0
+
+    for book_id_str, quantity in session_cart.items():
+        try:
+            qty = max(int(quantity), 1)
+        except Exception:
+            qty = 1
+
+        try:
+            r = requests.get(
+                f"{SERVICES['book']}/books/{book_id_str}/",
+                headers=headers, timeout=5
+            )
+            book = r.json()
+            unit_price = _to_vnd_int(book.get('price', 0))
+            title = book.get('title', f'Sach #{book_id_str}')
+            cover_image = book.get('cover_image', '')
+        except Exception:
+            unit_price = 0
+            title = f'Sach #{book_id_str}'
+            cover_image = ''
+
+        line_total = unit_price * qty
+        subtotal += line_total
+        total_quantity += qty
+        cart_items.append({
+            'book_id': str(book_id_str),
+            'quantity': qty,
+            'title': title,
+            'price_at_add': unit_price,
+            'line_total': line_total,
+            'cover_image': cover_image,
+        })
+
+    return {
+        'items': cart_items,
+        'subtotal': subtotal,
+        'total_quantity': total_quantity,
+    }
+
+
+def _sync_session_cart_to_service(request, headers, customer_id):
+    """Sync session cart to cart-service so order-service can checkout correctly."""
+    if not customer_id:
+        return
+
+    session_cart = request.session.get('cart', {})
+
+    try:
+        cart_resp = requests.post(
+            f"{SERVICES['cart']}/carts/",
+            json={'customer_id': customer_id},
+            headers=headers,
+            timeout=5,
+        )
+        cart_data = cart_resp.json() if cart_resp.headers.get('Content-Type', '').startswith('application/json') else {}
+        cart_id = cart_data.get('id')
+        if not cart_id:
+            return
+    except Exception:
+        return
+
+    try:
+        remote_resp = requests.get(
+            f"{SERVICES['cart']}/carts/{customer_id}/",
+            headers=headers,
+            timeout=5,
+        )
+        remote_cart = remote_resp.json() if remote_resp.headers.get('Content-Type', '').startswith('application/json') else {}
+        remote_items = remote_cart.get('items', []) if isinstance(remote_cart, dict) else []
+    except Exception:
+        remote_items = []
+
+    remote_by_book = {str(x.get('book_id')): x for x in remote_items if x.get('book_id') is not None}
+    session_book_ids = set(str(k) for k in session_cart.keys())
+
+    for book_id, qty_raw in session_cart.items():
+        book_id = str(book_id)
+        try:
+            qty = max(int(qty_raw), 1)
+        except Exception:
+            qty = 1
+
+        remote_item = remote_by_book.get(book_id)
+        try:
+            if remote_item:
+                remote_qty = int(remote_item.get('quantity', 0) or 0)
+                if remote_qty != qty:
+                    requests.put(
+                        f"{SERVICES['cart']}/cart-items/{remote_item.get('id')}/",
+                        json={'quantity': qty},
+                        headers=headers,
+                        timeout=5,
+                    )
+            else:
+                requests.post(
+                    f"{SERVICES['cart']}/cart-items/",
+                    json={'cart_id': cart_id, 'book_id': book_id, 'quantity': qty},
+                    headers=headers,
+                    timeout=5,
+                )
+        except Exception:
+            pass
+
+    for remote_book_id, remote_item in remote_by_book.items():
+        if remote_book_id not in session_book_ids:
+            try:
+                requests.delete(
+                    f"{SERVICES['cart']}/cart-items/{remote_item.get('id')}/remove/",
+                    headers=headers,
+                    timeout=5,
+                )
+            except Exception:
+                pass
+
+
 def my_cart(request):
     """Giỏ hàng của customer đang login."""
     guard = _require_login(request)
@@ -324,39 +460,57 @@ def my_cart(request):
     payload = _get_session_payload(request)
     headers = _auth_headers(request)
     
-    # Lấy sách từ session
-    session_cart = request.session.get('cart', {})
-    cart_items = []
-    
-    # Với mỗi sách trong giỏ, fetch thông tin từ book-service
-    for book_id_str, quantity in session_cart.items():
-        try:
-            r = requests.get(
-                f"{SERVICES['book']}/books/{book_id_str}/",
-                headers=headers, timeout=5
-            )
-            book = r.json()
-            cart_items.append({
-                'book_id': book_id_str,
-                'quantity': quantity,
-                'title': book.get('title', f'Sách #{book_id_str}'),
-                'price_at_add': book.get('price', 0),
-                'cover_image': book.get('cover_image', ''),
-            })
-        except:
-            # Nếu không lấy được từ service, vẫn hiển thị với info cơ bản
-            cart_items.append({
-                'book_id': book_id_str,
-                'quantity': quantity,
-                'title': f'Sách #{book_id_str}',
-                'price_at_add': 0,
-                'cover_image': '',
-            })
+    cart_data = _build_cart_details(request, headers)
     
     return render(request, 'cart.html', {
-        'cart': {'items': cart_items},
+        'cart': {'items': cart_data['items']},
+        'subtotal': cart_data['subtotal'],
+        'total_quantity': cart_data['total_quantity'],
         'customer_id': payload.get('user_id'),
         'user': payload
+    })
+
+
+@csrf_exempt
+def update_cart_quantity(request):
+    """Cập nhật số lượng sản phẩm trong giỏ theo session."""
+    if request.method != 'POST':
+        return JsonResponse({'error': 'POST only'}, status=400)
+
+    book_id = str(request.POST.get('book_id', '')).strip()
+    quantity_raw = request.POST.get('quantity')
+    if not book_id or quantity_raw is None:
+        return JsonResponse({'error': 'Missing book_id or quantity'}, status=400)
+
+    try:
+        quantity = int(quantity_raw)
+    except Exception:
+        return JsonResponse({'error': 'Invalid quantity'}, status=400)
+
+    if quantity < 1:
+        quantity = 1
+
+    session_cart = request.session.get('cart', {})
+    if book_id not in session_cart:
+        return JsonResponse({'error': 'Item not found in cart'}, status=404)
+
+    session_cart[book_id] = quantity
+    request.session['cart'] = session_cart
+    request.session.modified = True
+
+    headers = _auth_headers(request)
+    customer_id = _get_session_payload(request).get('user_id')
+    _sync_session_cart_to_service(request, headers, customer_id)
+    cart_data = _build_cart_details(request, headers)
+    item = next((x for x in cart_data['items'] if x['book_id'] == book_id), None)
+
+    return JsonResponse({
+        'success': True,
+        'book_id': book_id,
+        'quantity': quantity,
+        'line_total': item['line_total'] if item else 0,
+        'subtotal': cart_data['subtotal'],
+        'total_quantity': cart_data['total_quantity'],
     })
 
 
@@ -375,6 +529,10 @@ def remove_from_cart(request):
         del session_cart[str(book_id)]
         request.session['cart'] = session_cart
         request.session.modified = True
+
+    headers = _auth_headers(request)
+    customer_id = _get_session_payload(request).get('user_id')
+    _sync_session_cart_to_service(request, headers, customer_id)
     
     return JsonResponse({'success': True})
 
@@ -400,8 +558,30 @@ def checkout(request):
         return guard
     payload = _get_session_payload(request)
     headers = _auth_headers(request)
+    cart_data = _build_cart_details(request, headers)
+    subtotal = cart_data['subtotal']
+    vat = int(subtotal * 0.1)
+    shipping_fee = 0
+    grand_total = subtotal + vat + shipping_fee
     message = ''
+
     if request.method == 'POST':
+        if not cart_data['items']:
+            message = 'Giỏ hàng đang trống, không thể thanh toán.'
+            return render(request, 'checkout.html', {
+                'user': payload,
+                'message': message,
+                'cart_items': cart_data['items'],
+                'subtotal': subtotal,
+                'vat': vat,
+                'shipping_fee': shipping_fee,
+                'grand_total': grand_total,
+                'total_quantity': cart_data['total_quantity'],
+            })
+
+        # Đồng bộ session cart sang cart-service trước khi tạo order
+        _sync_session_cart_to_service(request, headers, payload.get('user_id'))
+
         data = {
             'customer_id': payload.get('user_id'),
             'payment_method': request.POST.get('payment_method'),
@@ -411,11 +591,52 @@ def checkout(request):
         try:
             r = requests.post(f"{SERVICES['order']}/orders/", json=data, headers=headers, timeout=5)
             if r.status_code in (200, 201):
-                return redirect('home')
+                request.session['cart'] = {}
+                request.session.modified = True
+                _sync_session_cart_to_service(request, headers, payload.get('user_id'))
+                return redirect('/orders/?placed=1')
             message = str(r.json())
         except:
             message = 'Không thể tạo đơn hàng'
-    return render(request, 'checkout.html', {'user': payload, 'message': message})
+    return render(request, 'checkout.html', {
+        'user': payload,
+        'message': message,
+        'cart_items': cart_data['items'],
+        'subtotal': subtotal,
+        'vat': vat,
+        'shipping_fee': shipping_fee,
+        'grand_total': grand_total,
+        'total_quantity': cart_data['total_quantity'],
+    })
+
+
+def my_orders(request):
+    """Lịch sử đơn hàng của customer đang login."""
+    guard = _require_login(request)
+    if guard:
+        return guard
+
+    payload = _get_session_payload(request)
+    headers = _auth_headers(request)
+    customer_id = payload.get('user_id')
+    orders = []
+
+    try:
+        r = requests.get(
+            f"{SERVICES['order']}/orders/?customer_id={customer_id}",
+            headers=headers,
+            timeout=8,
+        )
+        data = r.json() if r.headers.get('Content-Type', '').startswith('application/json') else []
+        orders = data if isinstance(data, list) else data.get('results', [])
+    except Exception:
+        orders = []
+
+    return render(request, 'orders.html', {
+        'orders': orders,
+        'user': payload,
+        'placed': request.GET.get('placed') == '1',
+    })
 
 
 def create_customer(request):
@@ -621,8 +842,14 @@ PUBLIC_ROUTES = ['/api/auth/login/', '/api/auth/register/', '/health/']
 @csrf_exempt
 def proxy(request, service, path=''):
     full_path = f"/api/{service}/{path}"
+    auth_header = request.headers.get('Authorization', '')
+    if not auth_header:
+        session_token = _get_token(request)
+        if session_token:
+            auth_header = f'Bearer {session_token}'
+
     if full_path not in PUBLIC_ROUTES:
-        token = request.headers.get('Authorization', '').replace('Bearer ', '')
+        token = auth_header.replace('Bearer ', '')
         if not token:
             return JsonResponse({"error": "Token required"}, status=401)
         try:
@@ -644,7 +871,7 @@ def proxy(request, service, path=''):
             url=url,
             headers={
                 'Content-Type': 'application/json',
-                'Authorization': request.headers.get('Authorization', '')
+                'Authorization': auth_header
             },
             data=request.body,
             params=request.GET,

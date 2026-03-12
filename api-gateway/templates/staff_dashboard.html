@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Staff Dashboard — BookStore</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap"
+    rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -22,305 +25,725 @@
       --warning: #f59e0b;
       --info: #0ea5e9;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--bg); font-family: 'Inter', sans-serif; color: var(--text); overflow-x: hidden; }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      overflow-x: hidden;
+    }
 
     /* LAYOUT */
-    .app-layout { display: flex; min-height: 100vh; }
-    
+    .app-layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
     /* SIDEBAR */
-    .sidebar { width: 260px; background: var(--sidebar-bg); color: #cbd5e1; display: flex; flex-direction: column; flex-shrink: 0; position: fixed; top: 0; bottom: 0; left: 0; z-index: 1000; transition: transform 0.3s; }
-    .sidebar-header { padding: 24px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-    .sidebar-brand { font-family: 'Outfit', sans-serif; font-size: 1.5rem; font-weight: 800; color: white; text-decoration: none; display: flex; align-items: center; gap: 10px; }
-    .sidebar-brand span { color: var(--primary); }
-    .sidebar-brand:hover { color: white; }
-    
-    .sidebar-menu { flex: 1; padding: 20px 16px; display: flex; flex-direction: column; gap: 8px; overflow-y: auto; }
-    .menu-label { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #64748b; margin: 16px 8px 8px; letter-spacing: 0.5px; }
-    .menu-link { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: #cbd5e1; text-decoration: none; border-radius: 10px; font-weight: 500; font-size: 0.95rem; transition: all 0.2s; }
-    .menu-link i { font-size: 1.1rem; width: 24px; text-align: center; }
-    .menu-link:hover { background: var(--sidebar-hover); color: white; }
-    .menu-link.active { background: var(--primary); color: white; font-weight: 600; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3); }
-    
-    .sidebar-footer { padding: 20px; border-top: 1px solid rgba(255,255,255,0.05); }
-    .user-profile { display: flex; align-items: center; gap: 12px; color: white; text-decoration: none; }
-    .user-avatar { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, var(--primary), #818cf8); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; }
-    .user-info { display: flex; flex-direction: column; }
-    .user-name { font-weight: 600; font-size: 0.9rem; }
-    .user-role { font-size: 0.75rem; color: #94a3b8; text-transform: capitalize; }
+    .sidebar {
+      width: 260px;
+      background: var(--sidebar-bg);
+      color: #cbd5e1;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1000;
+      transition: transform 0.3s;
+    }
+
+    .sidebar-header {
+      padding: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .sidebar-brand {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar-brand span {
+      color: var(--primary);
+    }
+
+    .sidebar-brand:hover {
+      color: white;
+    }
+
+    .sidebar-menu {
+      flex: 1;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow-y: auto;
+    }
+
+    .menu-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: #64748b;
+      margin: 16px 8px 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .menu-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      color: #cbd5e1;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+
+    .menu-link i {
+      font-size: 1.1rem;
+      width: 24px;
+      text-align: center;
+    }
+
+    .menu-link:hover {
+      background: var(--sidebar-hover);
+      color: white;
+    }
+
+    .menu-link.active {
+      background: var(--primary);
+      color: white;
+      font-weight: 600;
+      box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);
+    }
+
+    .sidebar-footer {
+      padding: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: white;
+      text-decoration: none;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), #818cf8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .user-name {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .user-role {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      text-transform: capitalize;
+    }
 
     /* MAIN CONTENT */
-    .main-content { flex: 1; margin-left: 260px; display: flex; flex-direction: column; min-width: 0; }
-    
+    .main-content {
+      flex: 1;
+      margin-left: 260px;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
     /* TOPBAR */
-    .topbar { background: var(--surface); padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 99; }
-    .topbar-left { display: flex; align-items: center; gap: 16px; }
-    .sidebar-toggle { display: none; background: none; border: none; font-size: 1.2rem; color: var(--text); cursor: pointer; }
-    .page-title { font-family: 'Outfit', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--text); margin: 0; }
-    
-    .topbar-right { display: flex; align-items: center; gap: 16px; }
-    .btn-topbar { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); background: #f1f5f9; border: none; cursor: pointer; transition: all 0.2s; text-decoration: none; }
-    .btn-topbar:hover { background: #e2e8f0; color: var(--text); }
-    
+    .topbar {
+      background: var(--surface);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 99;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .sidebar-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .page-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn-topbar {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      background: #f1f5f9;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .btn-topbar:hover {
+      background: #e2e8f0;
+      color: var(--text);
+    }
+
     /* CONTENT AREA */
-    .content-area { padding: 32px; flex: 1; }
-    
+    .content-area {
+      padding: 32px;
+      flex: 1;
+    }
+
     /* STATS GRID */
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; margin-bottom: 32px; }
-    .stat-card { background: var(--surface); border-radius: 16px; padding: 24px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); display: flex; align-items: flex-start; justify-content: space-between; transition: all 0.2s; }
-    .stat-card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); border-color: var(--primary); }
-    .stat-info { display: flex; flex-direction: column; gap: 8px; }
-    .stat-label { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-    .stat-val { font-family: 'Outfit', sans-serif; font-size: 2rem; font-weight: 800; color: var(--text); line-height: 1; }
-    .stat-icon { width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
-    .icon-primary { background: rgba(79, 70, 229, 0.1); color: var(--primary); }
-    .icon-accent { background: rgba(16, 185, 129, 0.1); color: var(--accent); }
-    .icon-warning { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
-    .icon-danger { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
-    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      transition: all 0.2s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+      border-color: var(--primary);
+    }
+
+    .stat-info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .stat-val {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .stat-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .icon-primary {
+      background: rgba(79, 70, 229, 0.1);
+      color: var(--primary);
+    }
+
+    .icon-accent {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--accent);
+    }
+
+    .icon-warning {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--warning);
+    }
+
+    .icon-danger {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+    }
+
     /* QUICK ACTIONS */
-    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-    .section-title { font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--text); margin: 0; }
-    
-    .actions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 32px; }
-    .action-card { background: var(--surface); border-radius: 14px; padding: 20px; border: 1px solid var(--border); text-decoration: none; display: flex; align-items: center; gap: 16px; transition: all 0.2s; }
-    .action-card:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-    .action-icon { width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; color: var(--primary); background: #f1f5f9; }
-    .action-card:hover .action-icon { background: var(--primary); color: white; }
-    .action-info { display: flex; flex-direction: column; }
-    .action-title { font-weight: 700; font-size: 0.95rem; color: var(--text); }
-    .action-sub { font-size: 0.8rem; color: var(--text-muted); }
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .actions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .action-card {
+      background: var(--surface);
+      border-radius: 14px;
+      padding: 20px;
+      border: 1px solid var(--border);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: all 0.2s;
+    }
+
+    .action-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .action-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      color: var(--primary);
+      background: #f1f5f9;
+    }
+
+    .action-card:hover .action-icon {
+      background: var(--primary);
+      color: white;
+    }
+
+    .action-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .action-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+
+    .action-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
 
     /* TABLES CARDS */
-    .card { background: var(--surface); border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); overflow: hidden; margin-bottom: 32px; }
-    .card-header { background: white; padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-    .card-title { font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--text); margin: 0; display: flex; align-items: center; gap: 10px; }
-    .badge-count { background: #f1f5f9; color: var(--text); padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; }
-    
-    .table-responsive { overflow-x: auto; }
-    .table { margin-bottom: 0; width: 100%; border-collapse: collapse; }
-    .table th { background: #f8fafc; color: var(--text-muted); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 14px 24px; border-bottom: 1px solid var(--border); text-align: left; }
-    .table td { padding: 16px 24px; border-bottom: 1px solid var(--border); font-size: 0.95rem; color: var(--text); vertical-align: middle; }
-    .table tbody tr:hover { background: #fafafa; }
-    .table tbody tr:last-child td { border-bottom: none; }
-    
-    .badge-danger { background: #fee2e2; color: #991b1b; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; border: 1px solid #fecaca; }
-    .badge-warning { background: #fef3c7; color: #92400e; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; border: 1px solid #fde68a; }
-    .badge-success { background: #dcfce7; color: #166534; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; border: 1px solid #bbf7d0; }
+    .card {
+      background: var(--surface);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+
+    .card-header {
+      background: white;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .badge-count {
+      background: #f1f5f9;
+      color: var(--text);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+    }
+
+    .table {
+      margin-bottom: 0;
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .table th {
+      background: #f8fafc;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 14px 24px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+
+    .table td {
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.95rem;
+      color: var(--text);
+      vertical-align: middle;
+    }
+
+    .table tbody tr:hover {
+      background: #fafafa;
+    }
+
+    .table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .badge-danger {
+      background: #fee2e2;
+      color: #991b1b;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border: 1px solid #fecaca;
+    }
+
+    .badge-warning {
+      background: #fef3c7;
+      color: #92400e;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border: 1px solid #fde68a;
+    }
+
+    .badge-success {
+      background: #dcfce7;
+      color: #166534;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border: 1px solid #bbf7d0;
+    }
 
     @media(max-width:992px) {
-      .sidebar { transform: translateX(-100%); }
-      .sidebar.open { transform: translateX(0); box-shadow: 4px 0 24px rgba(0,0,0,0.2); }
-      .main-content { margin-left: 0; }
-      .sidebar-toggle { display: block; }
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+        box-shadow: 4px 0 24px rgba(0, 0, 0, 0.2);
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      .sidebar-toggle {
+        display: block;
+      }
     }
   </style>
 </head>
+
 <body>
 
-<div class="app-layout">
-  
-  <!-- SIDEBAR -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <a href="/staff/" class="sidebar-brand">
-        <i class="fas fa-layer-group text-primary"></i>
-        <span>BookStore</span> Staff
-      </a>
-    </div>
-    
-    <div class="sidebar-menu">
-      <div class="menu-label">Tổng quan</div>
-      <a href="/staff/" class="menu-link active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-      
-      <div class="menu-label">Quản lý Cửa hàng</div>
-      <a href="/books/manage/" class="menu-link"><i class="fas fa-book"></i> Quản lý Sách</a>
-      <a href="/staff/comments/" class="menu-link"><i class="fas fa-comments"></i> Đánh giá khách</a>
-      <a href="/orders/new/" class="menu-link"><i class="fas fa-file-invoice"></i> Tạo đơn hàng</a>
-      
-      <div class="menu-label">Hệ thống</div>
-      <a href="/" class="menu-link"><i class="fas fa-store"></i> Quay lại cửa hàng</a>
-    </div>
-    
-    <div class="sidebar-footer">
-      <a href="#" class="user-profile">
-        <div class="user-avatar">{{ user.username|first|upper|default:"S" }}</div>
-        <div class="user-info">
-          <span class="user-name">{{ user.username|default:"Staff" }}</span>
-          <span class="user-role">{{ role|default:"Staff Member" }}</span>
-        </div>
-      </a>
-    </div>
-  </aside>
+  <div class="app-layout">
 
-  <!-- MAIN CONTENT -->
-  <main class="main-content">
-    
-    <!-- TOPBAR -->
-    <header class="topbar">
-      <div class="topbar-left">
-        <button class="sidebar-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
-        <h1 class="page-title">Tổng quan Quản lý</h1>
-      </div>
-      <div class="topbar-right">
-        <a href="/" class="btn-topbar" title="Cửa hàng"><i class="fas fa-globe"></i></a>
-        <a href="/logout/" class="btn-topbar" title="Đăng xuất"><i class="fas fa-sign-out-alt"></i></a>
-      </div>
-    </header>
-    
-    <!-- CONTENT -->
-    <div class="content-area">
-      
-      <!-- STATS GRID -->
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-info">
-            <span class="stat-label">Tổng đầu sách</span>
-            <span class="stat-val">{{ stats.total_books|default:"0" }}</span>
-          </div>
-          <div class="stat-icon icon-primary"><i class="fas fa-book"></i></div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-info">
-            <span class="stat-label">Tổng tồn kho</span>
-            <span class="stat-val">{{ stats.total_stock|default:"0" }}</span>
-          </div>
-          <div class="stat-icon icon-info"><i class="fas fa-boxes"></i></div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-info">
-            <span class="stat-label">Sách đã bán</span>
-            <span class="stat-val">{{ stats.total_sold|default:"0" }}</span>
-          </div>
-          <div class="stat-icon icon-accent"><i class="fas fa-shopping-cart"></i></div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-info">
-            <span class="stat-label">Sắp hết hàng</span>
-            <span class="stat-val text-danger">{{ stats.low_stock_count|default:"0" }}</span>
-          </div>
-          <div class="stat-icon icon-danger"><i class="fas fa-exclamation-triangle"></i></div>
-        </div>
-      </div>
-      
-      <!-- QUICK ACTIONS -->
-      <div class="section-header">
-        <h2 class="section-title">Thao tác Nhanh</h2>
-      </div>
-      <div class="actions-grid">
-        <a href="/books/manage/" class="action-card">
-          <div class="action-icon"><i class="fas fa-plus"></i></div>
-          <div class="action-info">
-            <span class="action-title">Thêm sách mới</span>
-            <span class="action-sub">Cập nhật kho lưu trữ</span>
-          </div>
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <a href="/staff/" class="sidebar-brand">
+          <i class="fas fa-layer-group text-primary"></i>
+          <span>BookStore</span> Staff
         </a>
-        <a href="/staff/comments/" class="action-card">
-          <div class="action-icon"><i class="fas fa-comments"></i></div>
-          <div class="action-info">
-            <span class="action-title">Quản lý nhận xét</span>
-            <span class="action-sub">Xem & phản hồi độc giả</span>
-          </div>
-        </a>
-        <a href="/orders/new/" class="action-card">
-          <div class="action-icon"><i class="fas fa-file-invoice-dollar"></i></div>
-          <div class="action-info">
-            <span class="action-title">Tạo đơn thủ công</span>
-            <span class="action-sub">Tạo giao dịch trực tiếp</span>
+      </div>
+
+      <div class="sidebar-menu">
+        <div class="menu-label">Tổng quan</div>
+        <a href="/staff/" class="menu-link active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+
+        <div class="menu-label">Quản lý Cửa hàng</div>
+        <a href="/staff/books/" class="menu-link"><i class="fas fa-book"></i> Quản lý Sách</a>
+        <a href="/staff/comments/" class="menu-link"><i class="fas fa-comments"></i> Đánh giá khách</a>
+        <a href="/orders/new/" class="menu-link"><i class="fas fa-file-invoice"></i> Tạo đơn hàng</a>
+
+        <div class="menu-label">Hệ thống</div>
+        <a href="/" class="menu-link"><i class="fas fa-store"></i> Quay lại cửa hàng</a>
+      </div>
+
+      <div class="sidebar-footer">
+        <a href="#" class="user-profile">
+          <div class="user-avatar">{{ user.username|first|upper|default:"S" }}</div>
+          <div class="user-info">
+            <span class="user-name">{{ user.username|default:"Staff" }}</span>
+            <span class="user-role">{{ role|default:"Staff Member" }}</span>
           </div>
         </a>
       </div>
-      
-      {% if stats.low_stock_books %}
-      <!-- LOW STOCK WARNING -->
-      <div class="card" style="border-color: #fecaca;">
-        <div class="card-header" style="background:#fef2f2;">
-          <h3 class="card-title text-danger"><i class="fas fa-exclamation-circle"></i> Sách cần nhập kho gấp</h3>
-          <span class="badge-count" style="background:white; color:#dc2626;">{{ stats.low_stock_count }} đầu sách</span>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+      <!-- TOPBAR -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+          <h1 class="page-title">Tổng quan Quản lý</h1>
         </div>
-        <div class="table-responsive">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Tên sách</th>
-                <th>Tác giả</th>
-                <th>Tồn kho</th>
-                <th>Đã bán</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for book in stats.low_stock_books %}
-              <tr>
-                <td style="font-weight:600;">{{ book.title }}</td>
-                <td style="color:var(--text-muted);">{{ book.author }}</td>
-                <td>
-                  {% if book.stock == 0 %}
+        <div class="topbar-right">
+          <a href="/" class="btn-topbar" title="Cửa hàng"><i class="fas fa-globe"></i></a>
+          <a href="/logout/" class="btn-topbar" title="Đăng xuất"><i class="fas fa-sign-out-alt"></i></a>
+        </div>
+      </header>
+
+      <!-- CONTENT -->
+      <div class="content-area">
+
+        <!-- STATS GRID -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-info">
+              <span class="stat-label">Tổng đầu sách</span>
+              <span class="stat-val">{{ stats.total_books|default:"0" }}</span>
+            </div>
+            <div class="stat-icon icon-primary"><i class="fas fa-book"></i></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <span class="stat-label">Tổng tồn kho</span>
+              <span class="stat-val">{{ stats.total_stock|default:"0" }}</span>
+            </div>
+            <div class="stat-icon icon-info"><i class="fas fa-boxes"></i></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <span class="stat-label">Sách đã bán</span>
+              <span class="stat-val">{{ stats.total_sold|default:"0" }}</span>
+            </div>
+            <div class="stat-icon icon-accent"><i class="fas fa-shopping-cart"></i></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-info">
+              <span class="stat-label">Sắp hết hàng</span>
+              <span class="stat-val text-danger">{{ stats.low_stock_count|default:"0" }}</span>
+            </div>
+            <div class="stat-icon icon-danger"><i class="fas fa-exclamation-triangle"></i></div>
+          </div>
+        </div>
+
+        <!-- QUICK ACTIONS -->
+        <div class="section-header">
+          <h2 class="section-title">Thao tác Nhanh</h2>
+        </div>
+        <div class="actions-grid">
+          <a href="/staff/books/" class="action-card">
+            <div class="action-icon"><i class="fas fa-plus"></i></div>
+            <div class="action-info">
+              <span class="action-title">Thêm sách mới</span>
+              <span class="action-sub">Cập nhật kho lưu trữ</span>
+            </div>
+          </a>
+          <a href="/staff/comments/" class="action-card">
+            <div class="action-icon"><i class="fas fa-comments"></i></div>
+            <div class="action-info">
+              <span class="action-title">Quản lý nhận xét</span>
+              <span class="action-sub">Xem & phản hồi độc giả</span>
+            </div>
+          </a>
+          <a href="/orders/new/" class="action-card">
+            <div class="action-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+            <div class="action-info">
+              <span class="action-title">Tạo đơn thủ công</span>
+              <span class="action-sub">Tạo giao dịch trực tiếp</span>
+            </div>
+          </a>
+        </div>
+
+        {% if stats.low_stock_books %}
+        <!-- LOW STOCK WARNING -->
+        <div class="card" style="border-color: #fecaca;">
+          <div class="card-header" style="background:#fef2f2;">
+            <h3 class="card-title text-danger"><i class="fas fa-exclamation-circle"></i> Sách cần nhập kho gấp</h3>
+            <span class="badge-count" style="background:white; color:#dc2626;">{{ stats.low_stock_count }} đầu
+              sách</span>
+          </div>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Tên sách</th>
+                  <th>Tác giả</th>
+                  <th>Tồn kho</th>
+                  <th>Đã bán</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for book in stats.low_stock_books %}
+                <tr>
+                  <td style="font-weight:600;">{{ book.title }}</td>
+                  <td style="color:var(--text-muted);">{{ book.author }}</td>
+                  <td>
+                    {% if book.stock == 0 %}
                     <span class="badge-danger"><i class="fas fa-times me-1"></i>Hết hàng</span>
-                  {% else %}
-                    <span class="badge-warning"><i class="fas fa-exclamation-triangle me-1"></i>{{ book.stock }} cuốn</span>
-                  {% endif %}
-                </td>
-                <td style="font-weight:600;">{{ book.sold_count|default:0 }}</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+                    {% else %}
+                    <span class="badge-warning"><i class="fas fa-exclamation-triangle me-1"></i>{{ book.stock }}
+                      cuốn</span>
+                    {% endif %}
+                  </td>
+                  <td style="font-weight:600;">{{ book.sold_count|default:0 }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
-      {% endif %}
-      
-      <!-- TOP SELLING BOOKS -->
-      <div class="card">
-        <div class="card-header">
-          <h3 class="card-title"><i class="fas fa-trophy text-warning"></i> Top Sách Bán Chạy Nhất</h3>
-        </div>
-        <div class="table-responsive">
-          <table class="table">
-            <thead>
-              <tr>
-                <th width="5%">#</th>
-                <th width="35%">Tên sách</th>
-                <th width="20%">Tác giả</th>
-                <th width="15%">Giá</th>
-                <th width="10%">Tồn kho</th>
-                <th width="10%">Đã bán</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for book in books|slice:":10" %}
-              <tr>
-                <td style="color:var(--text-muted);font-weight:700;">{{ forloop.counter }}</td>
-                <td style="font-weight:600;">{{ book.title }}</td>
-                <td style="color:var(--text-muted);">{{ book.author }}</td>
-                <td style="color:var(--primary);font-weight:700;">{{ book.price|floatformat:0 }}₫</td>
-                <td>
-                  {% if book.stock > 10 %}
-                    <span class="badge-success">{{ book.stock }}</span>
-                  {% elif book.stock > 0 %}
-                    <span class="badge-warning">{{ book.stock }}</span>
-                  {% else %}
-                    <span class="badge-danger">0</span>
-                  {% endif %}
-                </td>
-                <td style="font-weight:700;color:var(--text);">{{ book.sold_count|default:0 }}</td>
-              </tr>
-              {% empty %}
-              <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted);">Chưa có dữ liệu giao dịch</td></tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </div>
-      
-    </div>
-  </main>
-</div>
+        {% endif %}
 
-<script>
-  function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('open');
-  }
-</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- TOP SELLING BOOKS -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-trophy text-warning"></i> Top Sách Bán Chạy Nhất</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th width="5%">#</th>
+                  <th width="35%">Tên sách</th>
+                  <th width="20%">Tác giả</th>
+                  <th width="15%">Giá</th>
+                  <th width="10%">Tồn kho</th>
+                  <th width="10%">Đã bán</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for book in books|slice:":10" %}
+                <tr>
+                  <td style="color:var(--text-muted);font-weight:700;">{{ forloop.counter }}</td>
+                  <td style="font-weight:600;">{{ book.title }}</td>
+                  <td style="color:var(--text-muted);">{{ book.author }}</td>
+                  <td style="color:var(--primary);font-weight:700;">{{ book.price|floatformat:0 }}₫</td>
+                  <td>
+                    {% if book.stock > 10 %}
+                    <span class="badge-success">{{ book.stock }}</span>
+                    {% elif book.stock > 0 %}
+                    <span class="badge-warning">{{ book.stock }}</span>
+                    {% else %}
+                    <span class="badge-danger">0</span>
+                    {% endif %}
+                  </td>
+                  <td style="font-weight:700;color:var(--text);">{{ book.sold_count|default:0 }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted);">Chưa có dữ liệu giao
+                    dịch</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

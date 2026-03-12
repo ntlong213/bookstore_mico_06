@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Giỏ hàng — BookStore</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;700;800&display=swap"
+    rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -20,210 +23,655 @@
       --border: #e2e8f0;
       --glass: rgba(255, 255, 255, 0.85);
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--bg); font-family: 'Inter', sans-serif; color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
     /* NAVBAR */
     .navbar {
-      background: var(--glass); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(255,255,255,0.3);
-      padding: 1rem 0; position: sticky; top: 0; z-index: 100;
+      background: var(--glass);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     }
-    .navbar-brand { font-family: 'Outfit', sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--text) !important; letter-spacing: -0.5px; }
-    .navbar-brand span { color: var(--primary); }
-    .nav-link { color: var(--text-muted) !important; font-weight: 500; font-size: 0.95rem; padding: 0.5rem 1rem !important; border-radius: 8px; transition: all 0.2s; }
-    .nav-link:hover { color: var(--primary) !important; background: rgba(79, 70, 229, 0.05); }
+
+    .navbar-brand {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text) !important;
+      letter-spacing: -0.5px;
+    }
+
+    .navbar-brand span {
+      color: var(--primary);
+    }
+
+    .nav-link {
+      color: var(--text-muted) !important;
+      font-weight: 500;
+      font-size: 0.95rem;
+      padding: 0.5rem 1rem !important;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .nav-link:hover {
+      color: var(--primary) !important;
+      background: rgba(79, 70, 229, 0.05);
+    }
 
     /* HEADER */
-    .page-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 40px 0 30px; margin-bottom: 40px; }
-    .page-header h1 { font-family: 'Outfit', sans-serif; font-size: 2.2rem; font-weight: 800; color: var(--text); margin-bottom: 8px; letter-spacing: -0.5px; }
-    .page-header p { color: var(--text-muted); font-size: 1.05rem; margin: 0; }
+    .page-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 40px 0 30px;
+      margin-bottom: 40px;
+    }
 
-    .main-wrap { display: grid; grid-template-columns: 1fr 380px; gap: 32px; margin-bottom: 80px; align-items: start; min-width: 0; }
+    .page-header h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+
+    .page-header p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      margin: 0;
+    }
+
+    .main-wrap {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 32px;
+      margin-bottom: 80px;
+      align-items: start;
+      min-width: 0;
+    }
 
     /* CART ITEMS */
-    .cart-card { background: var(--surface); border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); overflow: hidden; min-width: 0; }
-    .cart-card-header { padding: 24px 30px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); background: #f8fafc; }
-    .cart-card-header h2 { font-family: 'Outfit', sans-serif; font-size: 1.3rem; font-weight: 700; color: var(--text); margin: 0; display: flex; align-items: center; gap: 10px; }
-    .cart-card-header h2 i { color: var(--primary); }
-    .item-count { background: rgba(79, 70, 229, 0.1); color: var(--primary); font-size: 0.85rem; padding: 6px 14px; border-radius: 20px; font-weight: 700; }
+    .cart-card {
+      background: var(--surface);
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+      overflow: hidden;
+      min-width: 0;
+    }
 
-    .cart-item { display: flex; gap: 20px; padding: 24px 30px; border-bottom: 1px solid var(--border); align-items: center; transition: background 0.2s; }
-    .cart-item:last-child { border-bottom: none; }
-    .cart-item:hover { background: #fafafa; }
-    
-    .item-img { width: 70px; height: 100px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.05); flex-shrink: 0; }
-    .item-img-placeholder { width: 70px; height: 100px; background: #f1f5f9; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #cbd5e1; font-size: 1.5rem; flex-shrink: 0; border: 1px solid var(--border); }
-    
-    .item-info { flex: 1; min-width: 0; }
-    .item-title { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--text); margin-bottom: 6px; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .item-book-id { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px; font-family: monospace; }
-    .item-unit-price { font-size: 0.95rem; color: var(--text-muted); font-weight: 500; }
-    
-    .qty-control { display: flex; align-items: center; gap: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; flex-shrink: 0; }
-    .qty-btn { width: 36px; height: 38px; border: none; background: #f8fafc; color: var(--text-muted); font-weight: 700; cursor: pointer; transition: all 0.2s; font-size: 1.1rem; }
-    .qty-btn:hover { background: #e2e8f0; color: var(--text); }
-    .qty-display { width: 44px; height: 38px; border: none; border-left: 1px solid var(--border); border-right: 1px solid var(--border); text-align: center; font-size: 1rem; font-weight: 600; background: white; color: var(--text); }
-    
-    .item-total { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.15rem; color: var(--primary); min-width: 100px; text-align: right; flex-shrink: 0; }
-    
-    .btn-remove { background: #fee2e2; border: none; color: #dc2626; cursor: pointer; width: 38px; height: 38px; border-radius: 10px; transition: all 0.2s; display: flex; align-items: center; justify-content: center; margin-left: 10px; }
-    .btn-remove:hover { background: #fecaca; transform: scale(1.05); }
+    .cart-card-header {
+      padding: 24px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: #f8fafc;
+    }
+
+    .cart-card-header h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .cart-card-header h2 i {
+      color: var(--primary);
+    }
+
+    .item-count {
+      background: rgba(79, 70, 229, 0.1);
+      color: var(--primary);
+      font-size: 0.85rem;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 700;
+    }
+
+    .cart-item {
+      display: flex;
+      gap: 20px;
+      padding: 24px 30px;
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+      transition: background 0.2s;
+    }
+
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+
+    .cart-item:hover {
+      background: #fafafa;
+    }
+
+    .item-img {
+      width: 70px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      flex-shrink: 0;
+    }
+
+    .item-img-placeholder {
+      width: 70px;
+      height: 100px;
+      background: #f1f5f9;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #cbd5e1;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+    }
+
+    .item-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .item-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text);
+      margin-bottom: 6px;
+      line-height: 1.3;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .item-book-id {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      font-family: monospace;
+    }
+
+    .item-unit-price {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .qty-control {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .qty-btn {
+      width: 36px;
+      height: 38px;
+      border: none;
+      background: #f8fafc;
+      color: var(--text-muted);
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 1.1rem;
+    }
+
+    .qty-btn:hover {
+      background: #e2e8f0;
+      color: var(--text);
+    }
+
+    .qty-display {
+      width: 44px;
+      height: 38px;
+      border: none;
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      text-align: center;
+      font-size: 1rem;
+      font-weight: 600;
+      background: white;
+      color: var(--text);
+    }
+
+    .item-total {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: var(--primary);
+      min-width: 100px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .btn-remove {
+      background: #fee2e2;
+      border: none;
+      color: #dc2626;
+      cursor: pointer;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 10px;
+    }
+
+    .btn-remove:hover {
+      background: #fecaca;
+      transform: scale(1.05);
+    }
 
     /* SUMMARY */
-    .summary-card { background: var(--surface); border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); position: sticky; top: 100px; min-width: 0; }
-    .summary-header { padding: 24px 30px; border-bottom: 1px solid var(--border); }
-    .summary-header h3 { font-family: 'Outfit', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--text); margin: 0; }
-    .summary-body { padding: 30px; }
-    
-    .summary-row { display: flex; justify-content: space-between; padding: 12px 0; font-size: 1rem; color: var(--text-muted); }
-    .summary-row span:last-child { font-weight: 600; color: var(--text); }
-    
-    .summary-total { display: flex; justify-content: space-between; padding: 20px 0 10px; margin-top: 10px; border-top: 1px dashed var(--border); align-items: center; }
-    .summary-total span:first-child { font-size: 1.1rem; font-weight: 600; color: var(--text); text-transform: uppercase; letter-spacing: 0.5px; }
-    .summary-total span:last-child { font-family: 'Outfit', sans-serif; font-size: 1.8rem; font-weight: 800; color: var(--primary); }
-    
-    .btn-checkout { width: 100%; padding: 16px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 1.05rem; font-weight: 700; cursor: pointer; transition: all 0.3s; margin-top: 24px; display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; }
-    .btn-checkout:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3); background: var(--primary-hover); color: white; }
-    
-    .btn-continue { width: 100%; padding: 16px; background: white; color: var(--text); border: 1px solid var(--border); border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; }
-    .btn-continue:hover { border-color: var(--primary); color: var(--primary); background: #f8fafc; }
-    
-    .secure-note { text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .summary-card {
+      background: var(--surface);
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+      position: sticky;
+      top: 100px;
+      min-width: 0;
+    }
+
+    .summary-header {
+      padding: 24px 30px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .summary-header h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .summary-body {
+      padding: 30px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      font-size: 1rem;
+      color: var(--text-muted);
+    }
+
+    .summary-row span:last-child {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .summary-total {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px 0 10px;
+      margin-top: 10px;
+      border-top: 1px dashed var(--border);
+      align-items: center;
+    }
+
+    .summary-total span:first-child {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .summary-total span:last-child {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .btn-checkout {
+      width: 100%;
+      padding: 16px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .btn-checkout:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+      background: var(--primary-hover);
+      color: white;
+    }
+
+    .btn-continue {
+      width: 100%;
+      padding: 16px;
+      background: white;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .btn-continue:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: #f8fafc;
+    }
+
+    .secure-note {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
 
     /* EMPTY */
-    .empty-cart { text-align: center; padding: 80px 40px; background: var(--surface); border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); }
-    .empty-icon { font-size: 5rem; color: #cbd5e1; margin-bottom: 24px; }
-    .empty-cart h3 { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.8rem; color: var(--text); margin-bottom: 12px; }
-    .empty-cart p { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 32px; }
-    .btn-explore { display: inline-flex; align-items: center; gap: 10px; padding: 16px 36px; background: var(--text); color: white; text-decoration: none; border-radius: 12px; font-weight: 700; font-size: 1.05rem; transition: all 0.3s; }
-    .btn-explore:hover { background: var(--primary); transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3); color: white; }
+    .empty-cart {
+      text-align: center;
+      padding: 80px 40px;
+      background: var(--surface);
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+    }
+
+    .empty-icon {
+      font-size: 5rem;
+      color: #cbd5e1;
+      margin-bottom: 24px;
+    }
+
+    .empty-cart h3 {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 1.8rem;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .empty-cart p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      margin-bottom: 32px;
+    }
+
+    .btn-explore {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 36px;
+      background: var(--text);
+      color: white;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      transition: all 0.3s;
+    }
+
+    .btn-explore:hover {
+      background: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+      color: white;
+    }
 
     @media(max-width:992px) {
-      .main-wrap { grid-template-columns: 1fr; }
-      .summary-card { position: static; }
-      .cart-item { flex-wrap: wrap; }
-      .item-total { text-align: left; }
+      .main-wrap {
+        grid-template-columns: 1fr;
+      }
+
+      .summary-card {
+        position: static;
+      }
+
+      .cart-item {
+        flex-wrap: wrap;
+      }
+
+      .item-total {
+        text-align: left;
+      }
     }
   </style>
 </head>
+
 <body>
 
-<nav class="navbar navbar-expand-lg">
-  <div class="container">
-    <a class="navbar-brand" href="/">Book<span>Store.</span></a>
-    <div class="navbar-nav ms-auto d-flex flex-row gap-2">
-      <a class="nav-link" href="/"><i class="fas fa-arrow-left me-1"></i> Tiếp tục mua</a>
-      <a class="nav-link" href="/login/"><i class="fas fa-sign-out-alt me-1"></i> Đăng xuất</a>
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="/">Book<span>Store.</span></a>
+      <div class="navbar-nav ms-auto d-flex flex-row gap-2">
+        <a class="nav-link" href="/"><i class="fas fa-arrow-left me-1"></i> Tiếp tục mua</a>
+        <a class="nav-link" href="/login/"><i class="fas fa-sign-out-alt me-1"></i> Đăng xuất</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-header">
+    <div class="container">
+      <h1>Giỏ hàng của bạn</h1>
+      <p>Kiểm tra lại danh sách trước khi tiến hành thanh toán.</p>
     </div>
   </div>
-</nav>
 
-<div class="page-header">
   <div class="container">
-    <h1>Giỏ hàng của bạn</h1>
-    <p>Kiểm tra lại danh sách trước khi tiến hành thanh toán.</p>
-  </div>
-</div>
+    {% if cart.items %}
+    <div class="main-wrap">
 
-<div class="container">
-  {% if cart.items %}
-  <div class="main-wrap">
-
-    <!-- ITEMS -->
-    <div class="cart-card">
-      <div class="cart-card-header">
-        <h2><i class="fas fa-shopping-bag"></i> Sản phẩm đang chọn</h2>
-        <span class="item-count">{{ cart.items|length }} sản phẩm</span>
-      </div>
-      {% for item in cart.items %}
-      <div class="cart-item">
-        {% if item.cover_image %}
-          <img src="{{ item.cover_image }}" alt="{{ item.title }}" class="item-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <!-- ITEMS -->
+      <div class="cart-card">
+        <div class="cart-card-header">
+          <h2><i class="fas fa-shopping-bag"></i> Sản phẩm đang chọn</h2>
+          <span class="item-count"><span id="itemCountVal">{{ total_quantity|default:0 }}</span> sản phẩm</span>
+        </div>
+        {% for item in cart.items %}
+        <div class="cart-item" data-book-id="{{ item.book_id }}" data-unit-price="{{ item.price_at_add|default:0 }}">
+          {% if item.cover_image %}
+          <img src="{{ item.cover_image }}" alt="{{ item.title }}" class="item-img"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
           <div class="item-img-placeholder" style="display:none;">📖</div>
-        {% else %}
+          {% else %}
           <div class="item-img-placeholder">📖</div>
-        {% endif %}
-        
-        <div class="item-info">
-          <div class="item-title">{{ item.title }}</div>
-          <div class="item-book-id">SKU: #{{ item.book_id }}</div>
-          <div class="item-unit-price">Đơn giá: {{ item.price_at_add|floatformat:0 }}₫</div>
+          {% endif %}
+
+          <div class="item-info">
+            <div class="item-title">{{ item.title }}</div>
+            <div class="item-book-id">SKU: #{{ item.book_id }}</div>
+            <div class="item-unit-price">Đơn giá: {{ item.price_at_add|floatformat:0 }}₫</div>
+          </div>
+
+          <div class="qty-control">
+            <button class="qty-btn" type="button" onclick="changeQty(this, -1)">−</button>
+            <input class="qty-display" type="number" value="{{ item.quantity }}" min="1" onchange="applyQty(this)">
+            <button class="qty-btn" type="button" onclick="changeQty(this, 1)">+</button>
+          </div>
+
+          <div class="item-total">{{ item.line_total|floatformat:0 }}₫</div>
+
+          <button class="btn-remove" title="Xóa" onclick="removeItem(this, '{{ item.book_id }}')">
+            <i class="fas fa-trash-alt"></i>
+          </button>
         </div>
-        
-        <div class="qty-control">
-          <button class="qty-btn" type="button" disabled>−</button>
-          <input class="qty-display" type="number" value="{{ item.quantity }}" readonly>
-          <button class="qty-btn" type="button" disabled>+</button>
-        </div>
-        
-        <div class="item-total">{{ item.price_at_add|floatformat:0 }}₫</div>
-        
-        <button class="btn-remove" title="Xóa" onclick="removeItem(this, '{{ item.book_id }}')">
-          <i class="fas fa-trash-alt"></i>
-        </button>
+        {% endfor %}
       </div>
-      {% endfor %}
+
+      <!-- SUMMARY -->
+      <div class="summary-card">
+        <div class="summary-header">
+          <h3>Tóm tắt đơn hàng</h3>
+        </div>
+        <div class="summary-body">
+          <div class="summary-row"><span>Tạm tính</span><span id="subtotalVal">{{ subtotal|floatformat:0 }}₫</span>
+          </div>
+          <div class="summary-row"><span>Phí vận chuyển</span><span style="color:var(--accent);font-weight:700;">Miễn
+              phí</span></div>
+          <div class="summary-row"><span>Giảm giá</span><span>—</span></div>
+
+          <div class="summary-total">
+            <span>Tổng cộng</span>
+            <span id="grandTotalVal">{{ subtotal|floatformat:0 }}₫</span>
+          </div>
+
+          <a href="/checkout/" class="btn-checkout"><i class="fas fa-lock"></i> Tiến hành thanh toán</a>
+          <a href="/" class="btn-continue"><i class="fas fa-arrow-left"></i> Chọn thêm sách</a>
+
+          <div class="secure-note">
+            <i class="fas fa-shield-alt text-primary"></i> Đảm bảo thanh toán an toàn 100%
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- SUMMARY -->
-    <div class="summary-card">
-      <div class="summary-header">
-        <h3>Tóm tắt đơn hàng</h3>
-      </div>
-      <div class="summary-body">
-        <div class="summary-row"><span>Tạm tính</span><span>—</span></div>
-        <div class="summary-row"><span>Phí vận chuyển</span><span style="color:var(--accent);font-weight:700;">Miễn phí</span></div>
-        <div class="summary-row"><span>Giảm giá</span><span>—</span></div>
-        
-        <div class="summary-total">
-          <span>Tổng cộng</span>
-          <span>—</span>
-        </div>
-        
-        <a href="/checkout/" class="btn-checkout"><i class="fas fa-lock"></i> Tiến hành thanh toán</a>
-        <a href="/" class="btn-continue"><i class="fas fa-arrow-left"></i> Chọn thêm sách</a>
-        
-        <div class="secure-note">
-          <i class="fas fa-shield-alt text-primary"></i> Đảm bảo thanh toán an toàn 100%
-        </div>
-      </div>
+    {% else %}
+    <div class="empty-cart">
+      <div class="empty-icon"><i class="fas fa-shopping-basket"></i></div>
+      <h3>Giỏ hàng của bạn đang trống</h3>
+      <p>Hãy khám phá những cuốn sách thú vị và thêm vào giỏ hàng ngay nhé!</p>
+      <a href="/" class="btn-explore"><i class="fas fa-book-open"></i> Khám phá sách ngay</a>
     </div>
+    {% endif %}
   </div>
 
-  {% else %}
-  <div class="empty-cart">
-    <div class="empty-icon"><i class="fas fa-shopping-basket"></i></div>
-    <h3>Giỏ hàng của bạn đang trống</h3>
-    <p>Hãy khám phá những cuốn sách thú vị và thêm vào giỏ hàng ngay nhé!</p>
-    <a href="/" class="btn-explore"><i class="fas fa-book-open"></i> Khám phá sách ngay</a>
-  </div>
-  {% endif %}
-</div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function formatMoney(v) {
+      return Number(v || 0).toLocaleString('vi-VN') + '₫';
+    }
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-function removeItem(btn, bookId) {
-  if (confirm('Bạn chắc chắn muốn xóa sách này khỏi giỏ?')) {
-    btn.closest('.cart-item').style.opacity = '0.5';
-    fetch('/cart/remove/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'X-CSRFToken': getCookie('csrftoken')
-      },
-      body: 'book_id=' + bookId
-    })
-    .then(() => window.location.reload())
-    .catch(() => window.location.reload());
-  }
-}
+    function recalcSummary() {
+      const rows = document.querySelectorAll('.cart-item');
+      let subtotal = 0;
+      let totalQty = 0;
+      rows.forEach((row) => {
+        const unit = parseInt(row.dataset.unitPrice || '0', 10);
+        const qtyInput = row.querySelector('.qty-display');
+        const qty = Math.max(parseInt(qtyInput.value || '1', 10), 1);
+        const line = unit * qty;
+        row.querySelector('.item-total').textContent = formatMoney(line);
+        subtotal += line;
+        totalQty += qty;
+      });
+      document.getElementById('subtotalVal').textContent = formatMoney(subtotal);
+      document.getElementById('grandTotalVal').textContent = formatMoney(subtotal);
+      document.getElementById('itemCountVal').textContent = totalQty;
+    }
 
-function getCookie(name) {
-  const v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
-  return v ? v[2] : null;
-}
-</script>
+    function syncQuantity(bookId, qty) {
+      const body = new URLSearchParams({ book_id: bookId, quantity: String(qty) }).toString();
+      return fetch('/cart/update/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-CSRFToken': getCookie('csrftoken')
+        },
+        body
+      }).then((r) => r.json());
+    }
+
+    function changeQty(btn, delta) {
+      const item = btn.closest('.cart-item');
+      const input = item.querySelector('.qty-display');
+      const next = Math.max((parseInt(input.value || '1', 10) + delta), 1);
+      input.value = next;
+      applyQty(input);
+    }
+
+    function applyQty(input) {
+      const item = input.closest('.cart-item');
+      const qty = Math.max(parseInt(input.value || '1', 10), 1);
+      input.value = qty;
+      recalcSummary();
+
+      const bookId = item.dataset.bookId;
+      syncQuantity(bookId, qty)
+        .then((res) => {
+          if (!res.success) {
+            window.location.reload();
+          }
+        })
+        .catch(() => window.location.reload());
+    }
+
+    function removeItem(btn, bookId) {
+      if (confirm('Bạn chắc chắn muốn xóa sách này khỏi giỏ?')) {
+        btn.closest('.cart-item').style.opacity = '0.5';
+        fetch('/cart/remove/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': getCookie('csrftoken')
+          },
+          body: 'book_id=' + bookId
+        })
+          .then(() => window.location.reload())
+          .catch(() => window.location.reload());
+      }
+    }
+
+    function getCookie(name) {
+      const v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+      return v ? v[2] : null;
+    }
+
+    recalcSummary();
+  </script>
 </body>
+
 </html>

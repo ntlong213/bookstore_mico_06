@@ -65,4 +65,4 @@ class BookUpdateStock(APIView):
             book.save()
             return Response({"message": "Stock updated", "new_stock": book.stock})
         except Book.DoesNotExist:
-            return Response({"error": "Not found"}, status=404)
+            return Response({"error": "Not found"}, status=404)

@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sửa Sách — BookStore Staff</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap"
+    rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -19,229 +22,572 @@
       --border: #e2e8f0;
       --danger: #ef4444;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--bg); font-family: 'Inter', sans-serif; color: var(--text); overflow-x: hidden; }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      overflow-x: hidden;
+    }
 
     /* LAYOUT */
-    .app-layout { display: flex; min-height: 100vh; }
-    
+    .app-layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
     /* SIDEBAR */
-    .sidebar { width: 260px; background: var(--sidebar-bg); color: #cbd5e1; display: flex; flex-direction: column; flex-shrink: 0; position: fixed; top: 0; bottom: 0; left: 0; z-index: 1000; transition: transform 0.3s; }
-    .sidebar-header { padding: 24px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-    .sidebar-brand { font-family: 'Outfit', sans-serif; font-size: 1.5rem; font-weight: 800; color: white; text-decoration: none; display: flex; align-items: center; gap: 10px; }
-    .sidebar-brand span { color: var(--primary); }
-    .sidebar-brand:hover { color: white; }
-    
-    .sidebar-menu { flex: 1; padding: 20px 16px; display: flex; flex-direction: column; gap: 8px; overflow-y: auto; }
-    .menu-label { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #64748b; margin: 16px 8px 8px; letter-spacing: 0.5px; }
-    .menu-link { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: #cbd5e1; text-decoration: none; border-radius: 10px; font-weight: 500; font-size: 0.95rem; transition: all 0.2s; }
-    .menu-link i { font-size: 1.1rem; width: 24px; text-align: center; }
-    .menu-link:hover { background: var(--sidebar-hover); color: white; }
-    .menu-link.active { background: var(--primary); color: white; font-weight: 600; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3); }
-    
-    .sidebar-footer { padding: 20px; border-top: 1px solid rgba(255,255,255,0.05); }
-    .user-profile { display: flex; align-items: center; gap: 12px; color: white; text-decoration: none; }
-    .user-avatar { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, var(--primary), #818cf8); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; }
-    .user-info { display: flex; flex-direction: column; }
-    .user-name { font-weight: 600; font-size: 0.9rem; }
-    .user-role { font-size: 0.75rem; color: #94a3b8; text-transform: capitalize; }
+    .sidebar {
+      width: 260px;
+      background: var(--sidebar-bg);
+      color: #cbd5e1;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1000;
+      transition: transform 0.3s;
+    }
+
+    .sidebar-header {
+      padding: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .sidebar-brand {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar-brand span {
+      color: var(--primary);
+    }
+
+    .sidebar-brand:hover {
+      color: white;
+    }
+
+    .sidebar-menu {
+      flex: 1;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow-y: auto;
+    }
+
+    .menu-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: #64748b;
+      margin: 16px 8px 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .menu-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      color: #cbd5e1;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+
+    .menu-link i {
+      font-size: 1.1rem;
+      width: 24px;
+      text-align: center;
+    }
+
+    .menu-link:hover {
+      background: var(--sidebar-hover);
+      color: white;
+    }
+
+    .menu-link.active {
+      background: var(--primary);
+      color: white;
+      font-weight: 600;
+      box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);
+    }
+
+    .sidebar-footer {
+      padding: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: white;
+      text-decoration: none;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), #818cf8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .user-name {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .user-role {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      text-transform: capitalize;
+    }
 
     /* MAIN CONTENT */
-    .main-content { flex: 1; margin-left: 260px; display: flex; flex-direction: column; min-width: 0; }
-    
+    .main-content {
+      flex: 1;
+      margin-left: 260px;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
     /* TOPBAR */
-    .topbar { background: var(--surface); padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 99; }
-    .topbar-left { display: flex; align-items: center; gap: 16px; }
-    .sidebar-toggle { display: none; background: none; border: none; font-size: 1.2rem; color: var(--text); cursor: pointer; }
-    .page-title { font-family: 'Outfit', sans-serif; font-size: 1.25rem; font-weight: 700; color: var(--text); margin: 0; }
-    
-    .topbar-right { display: flex; align-items: center; gap: 16px; }
-    .btn-topbar { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); background: #f1f5f9; border: none; cursor: pointer; transition: all 0.2s; text-decoration: none; }
-    .btn-topbar:hover { background: #e2e8f0; color: var(--text); }
+    .topbar {
+      background: var(--surface);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 99;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .sidebar-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .page-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn-topbar {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      background: #f1f5f9;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .btn-topbar:hover {
+      background: #e2e8f0;
+      color: var(--text);
+    }
 
     /* CONTENT AREA */
-    .content-area { padding: 32px; flex: 1; max-width: 1000px; }
-    
-    .form-card { background: var(--surface); border-radius: 16px; border: 1px solid var(--border); padding: 32px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); margin-bottom: 40px; }
-    .form-header { margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
-    .form-header h2 { font-family: 'Outfit', sans-serif; font-size: 1.4rem; font-weight: 700; color: var(--text); margin-bottom: 4px; display: flex; align-items: center; gap: 10px; }
-    .form-header p { color: var(--text-muted); font-size: 0.95rem; margin: 0; }
-    
-    .form-label { font-weight: 600; font-size: 0.85rem; color: var(--text); margin-bottom: 8px; display: block; }
-    .form-control { width: 100%; border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; font-size: 0.95rem; font-family: 'Inter', sans-serif; outline: none; transition: all 0.2s; background: #f8fafc; color: var(--text); }
-    .form-control:focus { border-color: var(--primary); background: white; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
-    
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
-    .form-group { margin-bottom: 24px; }
-    
-    .btn-save { background: var(--primary); color: white; border: none; border-radius: 10px; padding: 12px 24px; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; }
-    .btn-save:hover { background: #4338ca; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25); }
-    .btn-cancel { background: transparent; color: var(--text-muted); border: 1px solid var(--border); border-radius: 10px; padding: 12px 24px; font-weight: 600; font-size: 0.95rem; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; }
-    .btn-cancel:hover { border-color: #cbd5e1; color: var(--text); background: #f8fafc; }
-    
-    .msg-error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; border-radius: 10px; padding: 14px 16px; margin-bottom: 24px; font-size: 0.95rem; display: flex; align-items: center; gap: 10px; }
-    
-    .preview-box { background: #f8fafc; border: 1px dashed var(--border); border-radius: 10px; padding: 16px; display: flex; align-items: center; justify-content: center; min-height: 200px; margin-top: 10px; }
-    .preview-img { max-width: 140px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); object-fit: cover; }
-    .preview-placeholder { color: var(--text-muted); font-size: 0.9rem; text-align: center; }
-    .preview-placeholder i { font-size: 2rem; margin-bottom: 8px; display: block; color: #cbd5e1; }
+    .content-area {
+      padding: 32px;
+      flex: 1;
+      max-width: 1000px;
+    }
+
+    .form-card {
+      background: var(--surface);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 32px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+      margin-bottom: 40px;
+    }
+
+    .form-header {
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .form-header h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .form-header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin: 0;
+    }
+
+    .form-label {
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--text);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .form-control {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 0.95rem;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: all 0.2s;
+      background: #f8fafc;
+      color: var(--text);
+    }
+
+    .form-control:focus {
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    .btn-save {
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 24px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-save:hover {
+      background: #4338ca;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+    }
+
+    .btn-cancel {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 24px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-cancel:hover {
+      border-color: #cbd5e1;
+      color: var(--text);
+      background: #f8fafc;
+    }
+
+    .msg-error {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 24px;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .preview-box {
+      background: #f8fafc;
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 200px;
+      margin-top: 10px;
+    }
+
+    .preview-img {
+      max-width: 140px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      object-fit: cover;
+    }
+
+    .preview-placeholder {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    .preview-placeholder i {
+      font-size: 2rem;
+      margin-bottom: 8px;
+      display: block;
+      color: #cbd5e1;
+    }
 
     @media(max-width:992px) {
-      .sidebar { transform: translateX(-100%); }
-      .sidebar.open { transform: translateX(0); box-shadow: 4px 0 24px rgba(0,0,0,0.2); }
-      .main-content { margin-left: 0; }
-      .sidebar-toggle { display: block; }
-      .form-row { grid-template-columns: 1fr; gap: 16px; margin-bottom: 16px; }
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+        box-shadow: 4px 0 24px rgba(0, 0, 0, 0.2);
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      .sidebar-toggle {
+        display: block;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
     }
   </style>
 </head>
+
 <body>
 
-<div class="app-layout">
-  <!-- SIDEBAR -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <a href="/staff/" class="sidebar-brand">
-        <i class="fas fa-layer-group text-primary"></i>
-        <span>BookStore</span> Staff
-      </a>
-    </div>
-    <div class="sidebar-menu">
-      <div class="menu-label">Tổng quan</div>
-      <a href="/staff/" class="menu-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-      
-      <div class="menu-label">Quản lý Cửa hàng</div>
-      <a href="/books/manage/" class="menu-link active"><i class="fas fa-book"></i> Quản lý Sách</a>
-      <a href="/staff/comments/" class="menu-link"><i class="fas fa-comments"></i> Đánh giá khách</a>
-      <a href="/orders/new/" class="menu-link"><i class="fas fa-file-invoice"></i> Tạo đơn hàng</a>
-      
-      <div class="menu-label">Hệ thống</div>
-      <a href="/" class="menu-link"><i class="fas fa-store"></i> Quay lại cửa hàng</a>
-    </div>
-  </aside>
+  <div class="app-layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <a href="/staff/" class="sidebar-brand">
+          <i class="fas fa-layer-group text-primary"></i>
+          <span>BookStore</span> Staff
+        </a>
+      </div>
+      <div class="sidebar-menu">
+        <div class="menu-label">Tổng quan</div>
+        <a href="/staff/" class="menu-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
 
-  <!-- MAIN CONTENT -->
-  <main class="main-content">
-    <header class="topbar">
-      <div class="topbar-left">
-        <button class="sidebar-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
-        <h1 class="page-title">Cập nhật Sản phẩm</h1>
+        <div class="menu-label">Quản lý Cửa hàng</div>
+        <a href="/staff/books/" class="menu-link active"><i class="fas fa-book"></i> Quản lý Sách</a>
+        <a href="/staff/comments/" class="menu-link"><i class="fas fa-comments"></i> Đánh giá khách</a>
+        <a href="/orders/new/" class="menu-link"><i class="fas fa-file-invoice"></i> Tạo đơn hàng</a>
+
+        <div class="menu-label">Hệ thống</div>
+        <a href="/" class="menu-link"><i class="fas fa-store"></i> Quay lại cửa hàng</a>
       </div>
-      <div class="topbar-right">
-        <a href="/" class="btn-topbar" title="Cửa hàng"><i class="fas fa-globe"></i></a>
-        <a href="/logout/" class="btn-topbar" title="Đăng xuất"><i class="fas fa-sign-out-alt"></i></a>
-      </div>
-    </header>
-    
-    <div class="content-area">
-      <div class="form-card">
-        <div class="form-header">
-          <h2><i class="fas fa-edit text-primary"></i> Chỉnh sửa thông tin Sách</h2>
-          <p>Cập nhật thông tin chi tiết cho cuốn sách: <strong>{{ book.title }}</strong></p>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+          <h1 class="page-title">Cập nhật Sản phẩm</h1>
         </div>
+        <div class="topbar-right">
+          <a href="/" class="btn-topbar" title="Cửa hàng"><i class="fas fa-globe"></i></a>
+          <a href="/logout/" class="btn-topbar" title="Đăng xuất"><i class="fas fa-sign-out-alt"></i></a>
+        </div>
+      </header>
 
-        {% if message %}
-        <div class="msg-error"><i class="fas fa-exclamation-circle"></i> <span>{{ message }}</span></div>
-        {% endif %}
-
-        <form method="POST">
-          {% csrf_token %}
-
-          <div class="form-row">
-            <div class="form-group mb-0">
-              <label class="form-label">Tên sách <span class="text-danger">*</span></label>
-              <input type="text" name="title" class="form-control" value="{{ book.title }}" required>
-            </div>
-            <div class="form-group mb-0">
-              <label class="form-label">Tác giả <span class="text-danger">*</span></label>
-              <input type="text" name="author" class="form-control" value="{{ book.author }}" required>
-            </div>
+      <div class="content-area">
+        <div class="form-card">
+          <div class="form-header">
+            <h2><i class="fas fa-edit text-primary"></i> Chỉnh sửa thông tin Sách</h2>
+            <p>Cập nhật thông tin chi tiết cho cuốn sách: <strong>{{ book.title }}</strong></p>
           </div>
 
-          <div class="form-row">
-            <div class="form-group mb-0">
-              <label class="form-label">Giá bán (₫) <span class="text-danger">*</span></label>
-              <input type="number" name="price" class="form-control" value="{{ book.price }}" required>
-            </div>
-            <div class="form-group mb-0">
-              <label class="form-label">Giá gốc (₫)</label>
-              <input type="number" name="original_price" class="form-control" value="{{ book.original_price }}">
-            </div>
-          </div>
+          {% if message %}
+          <div class="msg-error"><i class="fas fa-exclamation-circle"></i> <span>{{ message }}</span></div>
+          {% endif %}
 
-          <div class="form-row">
-            <div class="form-group mb-0">
-              <label class="form-label">Tồn kho <span class="text-danger">*</span></label>
-              <input type="number" name="stock" class="form-control" value="{{ book.stock }}" required>
-            </div>
-            <div class="form-group mb-0">
-              <label class="form-label">Nhà xuất bản</label>
-              <input type="text" name="publisher" class="form-control" value="{{ book.publisher }}">
-            </div>
-          </div>
+          <form method="POST">
+            {% csrf_token %}
 
-          <div class="form-row">
-            <div class="form-group mb-0">
-              <label class="form-label">Ngôn ngữ</label>
-              <select name="language" class="form-control">
-                <option value="Vietnamese" {% if book.language == "Vietnamese" %}selected{% endif %}>Tiếng Việt</option>
-                <option value="English" {% if book.language == "English" %}selected{% endif %}>English (Tiếng Anh)</option>
-              </select>
-              
-              <div style="margin-top:24px;">
-                <label class="form-label">Mô tả nội dung</label>
-                <textarea name="description" class="form-control" rows="6">{{ book.description }}</textarea>
+            <div class="form-row">
+              <div class="form-group mb-0">
+                <label class="form-label">Tên sách <span class="text-danger">*</span></label>
+                <input type="text" name="title" class="form-control" value="{{ book.title }}" required>
+              </div>
+              <div class="form-group mb-0">
+                <label class="form-label">Tác giả <span class="text-danger">*</span></label>
+                <input type="text" name="author" class="form-control" value="{{ book.author }}" required>
               </div>
             </div>
-            
-            <div class="form-group mb-0">
-              <label class="form-label">Ảnh bìa (URL)</label>
-              <input type="url" name="cover_image" id="coverInput" class="form-control" value="{{ book.cover_image }}" oninput="previewCover(this.value)" placeholder="https://example.com/image.jpg">
-              
-              <div class="preview-box">
-                {% if book.cover_image %}
-                <img id="coverPreview" src="{{ book.cover_image }}" class="preview-img" onerror="this.onerror=null; this.src='https://via.placeholder.com/140x200?text=Lỗi+Ảnh';">
-                <div id="coverPlaceholder" class="preview-placeholder" style="display:none;">
-                  <i class="fas fa-image"></i> Chưa có ảnh bìa
-                </div>
-                {% else %}
-                <img id="coverPreview" src="" class="preview-img" style="display:none;" onerror="this.onerror=null; this.src='https://via.placeholder.com/140x200?text=Lỗi+Ảnh';">
-                <div id="coverPlaceholder" class="preview-placeholder">
-                  <i class="fas fa-image"></i> Chưa có ảnh bìa
-                </div>
-                {% endif %}
+
+            <div class="form-row">
+              <div class="form-group mb-0">
+                <label class="form-label">Giá bán (₫) <span class="text-danger">*</span></label>
+                <input type="number" name="price" class="form-control" value="{{ book.price }}" required>
+              </div>
+              <div class="form-group mb-0">
+                <label class="form-label">Giá gốc (₫)</label>
+                <input type="number" name="original_price" class="form-control" value="{{ book.original_price }}">
               </div>
             </div>
-          </div>
 
-          <div style="display:flex; gap:16px; align-items:center; margin-top:16px; padding-top:24px; border-top:1px solid var(--border);">
-            <button type="submit" class="btn-save"><i class="fas fa-save"></i> Lưu Thay Đổi</button>
-            <a href="/staff/books/" class="btn-cancel">Hủy Bỏ</a>
-          </div>
-        </form>
+            <div class="form-row">
+              <div class="form-group mb-0">
+                <label class="form-label">Tồn kho <span class="text-danger">*</span></label>
+                <input type="number" name="stock" class="form-control" value="{{ book.stock }}" required>
+              </div>
+              <div class="form-group mb-0">
+                <label class="form-label">Nhà xuất bản</label>
+                <input type="text" name="publisher" class="form-control" value="{{ book.publisher }}">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group mb-0">
+                <label class="form-label">Ngôn ngữ</label>
+                <select name="language" class="form-control">
+                  <option value="Vietnamese" {% if book.language=="Vietnamese" %}selected{% endif %}>Tiếng Việt</option>
+                  <option value="English" {% if book.language=="English" %}selected{% endif %}>English (Tiếng Anh)
+                  </option>
+                </select>
+
+                <div style="margin-top:24px;">
+                  <label class="form-label">Mô tả nội dung</label>
+                  <textarea name="description" class="form-control" rows="6">{{ book.description }}</textarea>
+                </div>
+              </div>
+
+              <div class="form-group mb-0">
+                <label class="form-label">Ảnh bìa (URL)</label>
+                <input type="url" name="cover_image" id="coverInput" class="form-control" value="{{ book.cover_image }}"
+                  oninput="previewCover(this.value)" placeholder="https://example.com/image.jpg">
+
+                <div class="preview-box">
+                  {% if book.cover_image %}
+                  <img id="coverPreview" src="{{ book.cover_image }}" class="preview-img"
+                    onerror="this.onerror=null; this.src='https://via.placeholder.com/140x200?text=Lỗi+Ảnh';">
+                  <div id="coverPlaceholder" class="preview-placeholder" style="display:none;">
+                    <i class="fas fa-image"></i> Chưa có ảnh bìa
+                  </div>
+                  {% else %}
+                  <img id="coverPreview" src="" class="preview-img" style="display:none;"
+                    onerror="this.onerror=null; this.src='https://via.placeholder.com/140x200?text=Lỗi+Ảnh';">
+                  <div id="coverPlaceholder" class="preview-placeholder">
+                    <i class="fas fa-image"></i> Chưa có ảnh bìa
+                  </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            <div
+              style="display:flex; gap:16px; align-items:center; margin-top:16px; padding-top:24px; border-top:1px solid var(--border);">
+              <button type="submit" class="btn-save"><i class="fas fa-save"></i> Lưu Thay Đổi</button>
+              <a href="/staff/books/" class="btn-cancel">Hủy Bỏ</a>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
-  </main>
-</div>
+    </main>
+  </div>
 
-<script>
-  function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('open');
-  }
-
-  function previewCover(url) {
-    const img = document.getElementById('coverPreview');
-    const placeholder = document.getElementById('coverPlaceholder');
-    if (url) { 
-      img.src = url; 
-      img.style.display = 'block'; 
-      placeholder.style.display = 'none';
-    } else { 
-      img.style.display = 'none'; 
-      placeholder.style.display = 'block';
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
     }
-  }
-</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    function previewCover(url) {
+      const img = document.getElementById('coverPreview');
+      const placeholder = document.getElementById('coverPlaceholder');
+      if (url) {
+        img.src = url;
+        img.style.display = 'block';
+        placeholder.style.display = 'none';
+      } else {
+        img.style.display = 'none';
+        placeholder.style.display = 'block';
+      }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

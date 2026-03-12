@@ -3,11 +3,14 @@
 ════════════════════════════════════════════════════════════ -->
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Thanh toán — BookStore</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;700;800&display=swap"
+    rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -22,162 +25,565 @@
       --border: #e2e8f0;
       --input-bg: #f1f5f9;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--bg); font-family: 'Inter', sans-serif; color: var(--text); min-height: 100vh; padding: 40px 16px; display: flex; align-items: flex-start; justify-content: center; }
-    
-    .checkout-wrap { width: 100%; max-width: 1000px; background: var(--surface); border-radius: 24px; overflow: hidden; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.01); border: 1px solid var(--border); }
-    
-    /* Header */
-    .co-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 32px 40px; display: flex; align-items: center; gap: 20px; position: relative; overflow: hidden; }
-    .co-header::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(79, 70, 229, 0.05) 0%, transparent 100%); pointer-events: none; }
-    .co-icon { width: 48px; height: 48px; background: rgba(79, 70, 229, 0.1); color: var(--primary); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; z-index: 1; }
-    .co-header-title { z-index: 1; }
-    .co-header h1 { font-family: 'Outfit', sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--text); margin: 0; letter-spacing: -0.5px; }
-    .co-header p { color: var(--text-muted); font-size: 0.95rem; margin: 4px 0 0; }
-    
-    /* Steps */
-    .steps { display: flex; padding: 0; border-bottom: 1px solid var(--border); background: #f8fafc; }
-    .step { flex: 1; padding: 18px 16px; text-align: center; font-size: 0.9rem; font-weight: 600; color: var(--text-muted); position: relative; border-bottom: 3px solid transparent; transition: all 0.2s; }
-    .step.active { color: var(--primary); border-bottom-color: var(--primary); background: white; }
-    .step.completed { color: var(--text); }
-    .step-num { width: 28px; height: 28px; border-radius: 50%; background: #e2e8f0; color: var(--text-muted); display: inline-flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; margin: 0 auto 8px; transition: all 0.2s; }
-    .step.active .step-num { background: var(--primary); color: white; box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2); }
-    .step.completed .step-num { background: var(--accent); color: white; }
-    
-    /* Body */
-    .co-body { display: grid; grid-template-columns: 1fr 340px; gap: 0; min-width: 0; }
-    .co-form { padding: 40px; border-right: 1px solid var(--border); min-width: 0; }
-    
-    .form-section-title { font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--text); margin: 0 0 24px; display: flex; align-items: center; gap: 10px; }
-    .form-section-title i { color: var(--primary); font-size: 1.1rem; }
-    
-    .form-divider { border: none; border-top: 1px dashed var(--border); margin: 32px 0; }
-    
-    .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-bottom: 20px; }
-    .form-grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .form-grid.full { grid-template-columns: 1fr; }
-    
-    .fg { display: flex; flex-direction: column; min-width: 0; }
-    .bs-label { font-weight: 600; font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .bs-input { width: 100%; padding: 14px 16px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 1rem; font-family: 'Inter', sans-serif; background: var(--input-bg); color: var(--text); transition: all 0.2s; outline: none; }
-    .bs-input:focus { border-color: var(--primary); background: white; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
-    
-    .bs-select { width: 100%; padding: 14px 16px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 1rem; font-family: 'Inter', sans-serif; background: var(--input-bg); color: var(--text); outline: none; transition: all 0.2s; cursor: pointer; text-overflow: ellipsis; }
-    .bs-select:focus { border-color: var(--primary); background: white; }
-    
-    /* Summary sidebar */
-    .co-summary { padding: 40px 32px; background: #f8fafc; min-width: 0; }
-    .co-summary h3 { font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 800; color: var(--text); margin-bottom: 24px; display: flex; align-items: center; gap: 8px; }
-    .co-summary h3 i { color: var(--text-muted); }
-    
-    .sum-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,0.05); font-size: 0.95rem; }
-    .sum-row span:first-child { color: var(--text-muted); }
-    .sum-row span:last-child { font-weight: 600; color: var(--text); }
-    
-    .sum-total { display: flex; justify-content: space-between; padding: 20px 0 0; margin-top: 8px; align-items: center; }
-    .sum-total span:first-child { font-size: 1.1rem; font-weight: 600; color: var(--text); text-transform: uppercase; letter-spacing: 0.5px; }
-    .sum-total span:last-child { font-family: 'Outfit', sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--primary); }
-    
-    /* Footer */
-    .co-footer { padding: 24px 40px; border-top: 1px solid var(--border); display: flex; gap: 16px; background: white; align-items: center; }
-    .btn-back { padding: 16px 28px; background: white; color: var(--text); border: 1px solid var(--border); border-radius: 12px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.2s; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; }
-    .btn-back:hover { border-color: var(--primary); color: var(--primary); background: #f8fafc; }
-    
-    .btn-place { flex: 1; padding: 16px 20px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 1.05rem; font-weight: 700; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; }
-    .btn-place:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3); background: var(--primary-hover); }
-    
-    @media(max-width:992px) {
-      .co-body { grid-template-columns: 1fr; }
-      .co-form { border-right: none; border-bottom: 1px solid var(--border); padding: 32px 24px; }
-      .form-grid.cols-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .co-summary { padding: 32px 24px; }
-      .co-footer { flex-direction: column-reverse; padding: 24px; gap: 12px; }
-      .co-footer a, .co-footer button { width: 100%; justify-content: center; }
-      .co-header { padding: 24px; }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
+
+    body {
+      background: var(--bg);
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      padding: 40px 16px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .checkout-wrap {
+      width: 100%;
+      max-width: 1000px;
+      background: var(--surface);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+      border: 1px solid var(--border);
+    }
+
+    /* Header */
+    .co-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 32px 40px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .co-header::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.05) 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .co-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(79, 70, 229, 0.1);
+      color: var(--primary);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+      z-index: 1;
+    }
+
+    .co-header-title {
+      z-index: 1;
+    }
+
+    .co-header h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text);
+      margin: 0;
+      letter-spacing: -0.5px;
+    }
+
+    .co-header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin: 4px 0 0;
+    }
+
+    /* Steps */
+    .steps {
+      display: flex;
+      padding: 0;
+      border-bottom: 1px solid var(--border);
+      background: #f8fafc;
+    }
+
+    .step {
+      flex: 1;
+      padding: 18px 16px;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      position: relative;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .step.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      background: white;
+    }
+
+    .step.completed {
+      color: var(--text);
+    }
+
+    .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin: 0 auto 8px;
+      transition: all 0.2s;
+    }
+
+    .step.active .step-num {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
+    }
+
+    .step.completed .step-num {
+      background: var(--accent);
+      color: white;
+    }
+
+    /* Body */
+    .co-body {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 0;
+      min-width: 0;
+    }
+
+    .co-form {
+      padding: 40px;
+      border-right: 1px solid var(--border);
+      min-width: 0;
+    }
+
+    .form-section-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 0 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .form-section-title i {
+      color: var(--primary);
+      font-size: 1.1rem;
+    }
+
+    .form-divider {
+      border: none;
+      border-top: 1px dashed var(--border);
+      margin: 32px 0;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .form-grid.cols-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .form-grid.full {
+      grid-template-columns: 1fr;
+    }
+
+    .fg {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .bs-label {
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .bs-input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      background: var(--input-bg);
+      color: var(--text);
+      transition: all 0.2s;
+      outline: none;
+    }
+
+    .bs-input:focus {
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+    }
+
+    .bs-select {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      background: var(--input-bg);
+      color: var(--text);
+      outline: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      text-overflow: ellipsis;
+    }
+
+    .bs-select:focus {
+      border-color: var(--primary);
+      background: white;
+    }
+
+    /* Summary sidebar */
+    .co-summary {
+      padding: 40px 32px;
+      background: #f8fafc;
+      min-width: 0;
+    }
+
+    .co-summary h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .co-summary h3 i {
+      color: var(--text-muted);
+    }
+
+    .sum-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      font-size: 0.95rem;
+    }
+
+    .sum-row span:first-child {
+      color: var(--text-muted);
+    }
+
+    .sum-row span:last-child {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .sum-total {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px 0 0;
+      margin-top: 8px;
+      align-items: center;
+    }
+
+    .sum-total span:first-child {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .sum-total span:last-child {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    /* Footer */
+    .co-footer {
+      padding: 24px 40px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 16px;
+      background: white;
+      align-items: center;
+    }
+
+    .btn-back {
+      padding: 16px 28px;
+      background: white;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn-back:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: #f8fafc;
+    }
+
+    .btn-place {
+      flex: 1;
+      padding: 16px 20px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn-place:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+      background: var(--primary-hover);
+    }
+
+    @media(max-width:992px) {
+      .co-body {
+        grid-template-columns: 1fr;
+      }
+
+      .co-form {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 32px 24px;
+      }
+
+      .form-grid.cols-3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .co-summary {
+        padding: 32px 24px;
+      }
+
+      .co-footer {
+        flex-direction: column-reverse;
+        padding: 24px;
+        gap: 12px;
+      }
+
+      .co-footer a,
+      .co-footer button {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .co-header {
+        padding: 24px;
+      }
+    }
+
     @media(max-width:576px) {
-      .form-grid, .form-grid.cols-3 { grid-template-columns: 1fr; }
+
+      .form-grid,
+      .form-grid.cols-3 {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
+
 <body>
-<div class="checkout-wrap">
-  <div class="co-header">
-    <div class="co-icon"><i class="fas fa-shield-check"></i></div>
-    <div class="co-header-title">
-      <h1>Thanh toán an toàn</h1>
-      <p>Thông tin của bạn được mã hóa và bảo mật</p>
+  <div class="checkout-wrap">
+    {% if message %}
+    <div
+      style="margin:16px 24px 0; padding:12px 14px; border-radius:10px; background:#fee2e2; color:#991b1b; border:1px solid #fecaca; font-weight:600; font-size:0.95rem;">
+      {{ message }}
     </div>
-  </div>
+    {% endif %}
+    <div class="co-header">
+      <div class="co-icon"><i class="fas fa-shield-check"></i></div>
+      <div class="co-header-title">
+        <h1>Thanh toán an toàn</h1>
+        <p>Thông tin của bạn được mã hóa và bảo mật</p>
+      </div>
+    </div>
 
-  <div class="steps">
-    <div class="step active"><div class="step-num">1</div>Thông tin</div>
-    <div class="step"><div class="step-num">2</div>Thanh toán</div>
-    <div class="step"><div class="step-num">3</div>Hoàn tất</div>
-  </div>
+    <div class="steps">
+      <div class="step active">
+        <div class="step-num">1</div>Thông tin
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>Thanh toán
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>Hoàn tất
+      </div>
+    </div>
 
-  <div class="co-body">
-    <div class="co-form">
-      <form>
-        <div class="form-section-title"><i class="fas fa-truck"></i> Thông tin giao hàng</div>
-        <div class="form-grid">
-          <div class="fg"><label class="bs-label">Họ</label><input class="bs-input" type="text" placeholder="Nguyễn" required></div>
-          <div class="fg"><label class="bs-label">Tên</label><input class="bs-input" type="text" placeholder="Văn A" required></div>
-        </div>
-        <div class="form-grid">
-          <div class="fg"><label class="bs-label">Email</label><input class="bs-input" type="email" placeholder="email@example.com" required></div>
-          <div class="fg"><label class="bs-label">Số điện thoại</label><input class="bs-input" type="tel" placeholder="0901 234 567" required></div>
-        </div>
-        <div class="form-grid full">
-          <div class="fg"><label class="bs-label">Địa chỉ cụ thể</label><input class="bs-input" type="text" placeholder="123 Đường ABC, Phường XYZ" required></div>
-        </div>
-        <div class="form-grid cols-3">
-          <div class="fg"><label class="bs-label">Thành phố</label><input class="bs-input" type="text" placeholder="Hà Nội" required></div>
-          <div class="fg"><label class="bs-label">Quận/Huyện</label><input class="bs-input" type="text" placeholder="Cầu Giấy" required></div>
-          <div class="fg"><label class="bs-label">Mã bưu chính</label><input class="bs-input" type="text" placeholder="10000"></div>
-        </div>
-
-        <hr class="form-divider">
-        
-        <div class="form-section-title"><i class="fas fa-credit-card"></i> Thông tin thanh toán</div>
-        <div class="form-grid full">
-          <div class="fg"><label class="bs-label">Tên chủ thẻ</label><input class="bs-input" type="text" placeholder="NGUYEN VAN A" required></div>
-        </div>
-        <div class="form-grid full">
-          <div class="fg"><label class="bs-label">Số thẻ tín dụng / Ghi nợ</label><input class="bs-input" type="text" placeholder="1234 5678 9012 3456" maxlength="19" required></div>
-        </div>
-        <div class="form-grid cols-3">
-          <div class="fg"><label class="bs-label">Ngày hết hạn</label><input class="bs-input" type="text" placeholder="MM/YY" maxlength="5" required></div>
-          <div class="fg"><label class="bs-label">CVV/CVC</label><input class="bs-input" type="text" placeholder="123" maxlength="3" required></div>
-          <div class="fg"><label class="bs-label">Phương thức</label>
-            <select class="bs-select">
-              <option>Thẻ thanh toán quốc tế</option>
-              <option>Thẻ nội địa (ATM)</option>
-              <option>Chuyển khoản</option>
-              <option>Thanh toán khi nhận hàng</option>
-            </select>
+    <div class="co-body">
+      <div class="co-form">
+        <form id="checkoutForm" method="post" action="/checkout/">
+          {% csrf_token %}
+          <div class="form-section-title"><i class="fas fa-truck"></i> Thông tin giao hàng</div>
+          <div class="form-grid">
+            <div class="fg"><label class="bs-label">Họ</label><input class="bs-input" type="text" name="last_name"
+                placeholder="Nguyễn" required></div>
+            <div class="fg"><label class="bs-label">Tên</label><input class="bs-input" type="text" name="first_name"
+                placeholder="Văn A" required></div>
           </div>
-        </div>
-      </form>
+          <div class="form-grid">
+            <div class="fg"><label class="bs-label">Email</label><input class="bs-input" type="email" name="email"
+                placeholder="email@example.com" required></div>
+            <div class="fg"><label class="bs-label">Số điện thoại</label><input class="bs-input" type="tel" name="phone"
+                placeholder="0901 234 567" required></div>
+          </div>
+          <div class="form-grid full">
+            <div class="fg"><label class="bs-label">Địa chỉ cụ thể</label><input class="bs-input" type="text"
+                name="address" placeholder="123 Đường ABC, Phường XYZ" required></div>
+          </div>
+          <div class="form-grid cols-3">
+            <div class="fg"><label class="bs-label">Thành phố</label><input class="bs-input" type="text" name="city"
+                placeholder="Hà Nội" required></div>
+            <div class="fg"><label class="bs-label">Quận/Huyện</label><input class="bs-input" type="text"
+                name="district" placeholder="Cầu Giấy" required></div>
+            <div class="fg"><label class="bs-label">Mã bưu chính</label><input class="bs-input" type="text"
+                name="postal_code" placeholder="10000"></div>
+          </div>
+
+          <input type="hidden" name="shipping_address" id="shippingAddressHidden">
+
+          <hr class="form-divider">
+
+          <div id="cardSectionTitle" class="form-section-title"><i class="fas fa-credit-card"></i> Thông tin thanh toán
+          </div>
+          <div id="cardFields" class="form-grid full">
+            <div class="fg"><label class="bs-label">Tên chủ thẻ</label><input class="bs-input" type="text"
+                id="cardHolderInput" name="card_holder" placeholder="NGUYEN VAN A"></div>
+          </div>
+          <div id="cardNumberWrap" class="form-grid full">
+            <div class="fg"><label class="bs-label">Số thẻ tín dụng / Ghi nợ</label><input class="bs-input" type="text"
+                id="cardNumberInput" name="card_number" placeholder="1234 5678 9012 3456" maxlength="19"></div>
+          </div>
+          <div class="form-grid cols-3">
+            <div class="fg"><label class="bs-label">Ngày hết hạn</label><input class="bs-input" type="text"
+                id="expDateInput" name="exp_date" placeholder="MM/YY" maxlength="5"></div>
+            <div class="fg"><label class="bs-label">CVV/CVC</label><input class="bs-input" type="text" id="cvvInput"
+                name="cvv" placeholder="123" maxlength="3"></div>
+            <div class="fg"><label class="bs-label">Phương thức</label>
+              <select class="bs-select" id="paymentMethodSelect" name="payment_method" required>
+                <option value="card">Thẻ thanh toán quốc tế</option>
+                <option value="atm">Thẻ nội địa (ATM)</option>
+                <option value="bank_transfer">Chuyển khoản</option>
+                <option value="cod">Thanh toán khi nhận hàng</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="co-summary">
+        <h3><i class="fas fa-receipt"></i> Tóm tắt đơn hàng</h3>
+        <div class="sum-row"><span>Số lượng sản phẩm</span><span>{{ total_quantity|default:0 }}</span></div>
+        <div class="sum-row"><span>Tạm tính</span><span>{{ subtotal|floatformat:0 }}₫</span></div>
+        <div class="sum-row"><span>Phí vận chuyển</span><span style="color:var(--accent)">{% if shipping_fee %}{{
+            shipping_fee|floatformat:0 }}₫{% else %}Miễn phí{% endif %}</span></div>
+        <div class="sum-row"><span>Thuế VAT (10%)</span><span>{{ vat|floatformat:0 }}₫</span></div>
+        <div class="sum-total"><span>Tổng</span><span>{{ grand_total|floatformat:0 }}₫</span></div>
+        <p
+          style="text-align:center; font-size:0.85rem; color:var(--text-muted); margin-top:32px; display:flex; align-items:center; justify-content:center; gap:6px;">
+          <i class="fas fa-info-circle"></i> Vui lòng kiểm tra kỹ thông tin
+        </p>
+      </div>
     </div>
 
-    <div class="co-summary">
-      <h3><i class="fas fa-receipt"></i> Tóm tắt đơn hàng</h3>
-      <div class="sum-row"><span>Tạm tính</span><span>—</span></div>
-      <div class="sum-row"><span>Phí vận chuyển</span><span style="color:var(--accent)">Miễn phí</span></div>
-      <div class="sum-row"><span>Thuế VAT (10%)</span><span>—</span></div>
-      <div class="sum-total"><span>Tổng</span><span>—</span></div>
-      <p style="text-align:center; font-size:0.85rem; color:var(--text-muted); margin-top:32px; display:flex; align-items:center; justify-content:center; gap:6px;">
-        <i class="fas fa-info-circle"></i> Vui lòng kiểm tra kỹ thông tin
-      </p>
+    <div class="co-footer">
+      <a href="/cart/" class="btn-back"><i class="fas fa-arrow-left"></i> Quay lại giỏ hàng</a>
+      <button class="btn-place" type="submit" form="checkoutForm" {% if not cart_items %}disabled
+        style="opacity:0.6;cursor:not-allowed;" {% endif %}><i class="fas fa-check-circle"></i> Đặt hàng ngay</button>
     </div>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function toggleCardRequired() {
+      const method = document.getElementById('paymentMethodSelect')?.value || 'card';
+      const cardInputs = [
+        document.getElementById('cardHolderInput'),
+        document.getElementById('cardNumberInput'),
+        document.getElementById('expDateInput'),
+        document.getElementById('cvvInput')
+      ];
+      const cardBlocks = [
+        document.getElementById('cardSectionTitle'),
+        document.getElementById('cardFields'),
+        document.getElementById('cardNumberWrap')
+      ];
 
-  <div class="co-footer">
-    <a href="/cart/" class="btn-back"><i class="fas fa-arrow-left"></i> Quay lại giỏ hàng</a>
-    <button class="btn-place"><i class="fas fa-check-circle"></i> Đặt hàng ngay</button>
-  </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+      const needsCard = method === 'card' || method === 'atm';
+      cardInputs.forEach((input) => {
+        if (!input) return;
+        input.required = needsCard;
+        if (!needsCard) input.value = '';
+      });
+      cardBlocks.forEach((block) => {
+        if (!block) return;
+        block.style.opacity = needsCard ? '1' : '0.55';
+      });
+    }
+
+    document.getElementById('paymentMethodSelect')?.addEventListener('change', toggleCardRequired);
+
+    document.getElementById('checkoutForm')?.addEventListener('submit', function () {
+      const address = this.querySelector('input[name="address"]')?.value || '';
+      const district = this.querySelector('input[name="district"]')?.value || '';
+      const city = this.querySelector('input[name="city"]')?.value || '';
+      const parts = [address, district, city].filter(Boolean);
+      document.getElementById('shippingAddressHidden').value = parts.join(', ');
+    });
+
+    toggleCardRequired();
+  </script>
 </body>
+
 </html>
